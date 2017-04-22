@@ -6,14 +6,13 @@
 #include "user.hpp"
 
 class Base {
-protected:
+public:
 	Train train;
 	AllUser user;
 	std::ofstream systemHistory;
 	std::ofstream trainData;
 	std::ofstream userData;
 	
-public:
 	Base() {}
 	~Base() {}	
 };
