@@ -2,10 +2,11 @@
 #define USER_HPP
 
 #include "base.hpp"
+#include "map.hpp"
 
 class AllUser : public Base {
 private:
-	map<string, User> map; // user's ID -> User 
+	sjtu::map<string, User> map; // user's ID -> User 
 	
 protected:
 	void SystemHistory(const ostream &fout) {
@@ -55,12 +56,12 @@ public:
 		return fin;
 	}
 	ofstream& operator<<(const ofstream &fout) const {
-		fout << name << " " << userID << " " << password << endl;
+		fout << name << " " << userID << " " << password << std::endl;
 		return fout;
 	}
 	
 	void OutputLog(const ofstream &fout) const {
-		fout << mylog << endl;
+		fout << mylog << std::endl;
 	}
 };
 
