@@ -18,11 +18,13 @@ public:
 		return map[userID];
 	}
 	
-	bool Login(const string &userID, const string &pwd) const { // true if succeed, false if fail
+	bool Login(const string &userID, const string &pwd) const {
+		// return true if succeed, false if fail
 		return map[userID].password == pwd;
 	}
 	
-	bool Regester(const string &name, const string userID, const string password) {  // true if succeed, false if fail
+	bool Regester(const string &name, const string userID, const string password) {
+		// return true if succeed, false if fail
 		if(map.count(userID)) {
 			return false;
 		} else {
@@ -69,7 +71,8 @@ public:
 		return train.QueryTicket(start, end, date);
 	}
 	
-	bool BookTicket(const string &trainNumber, const string &start, const string &end, const size_t count) { // true if succeed, false if fail
+	bool BookTicket(const string &trainNumber, const string &start, const string &end, const size_t count) {
+		// return true if succeed, false if fail
 		bool success = train.BookTicket(trainNumber, start, end, count);
 		if(success) {
 			mylog.AddBook(const string &trainNumber, const string &start, const string &end, const size_t count);
@@ -77,7 +80,8 @@ public:
 		return success;
 	}
 	
-	bool ReturnTicket(const string &trainNumber, const string &start, const string &end, const size_t count) { // true if succeed, false if fail
+	bool ReturnTicket(const string &trainNumber, const string &start, const string &end, const size_t count) {
+		// return true if succeed, false if fail
 		bool success train.ReturnTicket(trainNumber, start, end, count);
 		if(success) {
 			mylog.AddReturn(const string &trainNumber, const string &start, const string &end, const size_t count);
