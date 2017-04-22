@@ -1,6 +1,8 @@
 #ifndef USER_HPP
 #define USER_HPP
 
+#include "base.hpp"
+
 class AllUser : public Base {
 private:
 	map<string, User> map; // user's ID -> User 
