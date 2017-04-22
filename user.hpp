@@ -26,7 +26,7 @@ public:
 		return map[userID].password == pwd;
 	}
 	
-	bool Regester(const string &name, const string userID, const string password) {
+	bool Register(const string &name, const string userID, const string password = "000000") {
 		// return true if succeed, false if fail
 		if(map.count(userID)) {
 			return false;
