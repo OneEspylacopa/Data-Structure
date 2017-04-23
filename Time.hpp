@@ -7,8 +7,6 @@
 */
 
 #include "binfstream.hpp"
-using std::binifstream;
-using std::binofstream;
 using std::string;
 
 class Time{
@@ -26,7 +24,7 @@ class Time{
 	{
 		if (obj.hour < 10) fout << 0 << obj.hour;	
 	    else fout << obj.hour;
-	    fout << ":";
+	    fout << ':';
 	    if (obj.minute < 10) fout << 0 << obj.minute;
 	    else fout << obj.minute;
 	    return fout;
