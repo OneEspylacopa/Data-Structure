@@ -5,45 +5,44 @@
 #include <cstring>
 #include "base.hpp"
 #include "map.hpp"
+#include "binfstream.hpp"
 
-class AllUser{
+using std::string;
+
+class AllUser {
 private:
-	static void SystemHistory(const std::ofstream &fout) {
+	static void SystemHistory(const binofstream &fout) {
 		// TODO
 	}
 	
 private:
 	class User {
-	private:
-		std::string name; // username
-		std::string userID; // user's ID 
-		std::string password; // user's password 
+	protected:
+		string name; // username
+		string userID; // user's ID 
+		string password; // user's password 
 		Log mylog; // user's log
 		
 	public:
 		User() {}
-		User(const std::string &name, const std::string &userID, const std::string &password) : name(name), userID(userID), password(password) { }
+		User(const string &name, const string &userID, const string &password) : name(name), userID(userID), password(password) { }
 		~User() {}
 		
-		friend std::ifstream& operator>>(std::ifstream &fin, User &rhs) {
+		friend binifstream& operator>>(binifstream &fin, User &rhs) {
 			fin >> rhs.name >> rhs.userID >> rhs.password >> rhs.mylog;
 			return fin;
 		}
-		friend std::ofstream& operator<<(std::ofstream &fout, const User &rhs) {
-			fout << rhs.name << " " << rhs.userID << " " << rhs.password << std::endl;
+		friend binofstream& operator<<(binofstream &fout, const User &rhs) const {
+			fout << rhs.name << rhs.userID << rhs.password << std::endl;
 			return fout;
 		}
 		
-		void OutputLog(const std::ofstream &fout) const {
-			fout << mylog << std::endl;
+		void OutputLog(const binofstream &fout) const {
+			fout << mylog;
 		}
 		
-		std::string GetPassword() const {
+		string GetPassword() const {
 			return password;
-		}
-		
-		void ModifyPassword(const string &pwd) {
-			password = pwd;
 		}
 	};
 	
@@ -52,11 +51,11 @@ private:
 		GeneralUser() {}
 		~GeneralUser() {}
 		
-		TrainNumber QueryTicket(const std::string &start, const std::string &end, const Date &date) const {
+		TrainNumber QueryTicket(const ststring &start, const string &end, const Date &date) const {
 			return train.QueryTicket(start, end, date);
 		}
 		
-		bool BookTicket(const std::string &trainNumber, const std::string &start, const std::string &end, const size_t count) {
+		bool BookTicket(const string &trainNumber, const string &start, const string &end, const size_t count) {
 			// return true if succeed, false if fail
 			bool success = train.BookTicket(trainNumber, start, end, count);
 			if(success) {
@@ -65,7 +64,7 @@ private:
 			return success;
 		}
 		
-		bool ReturnTicket(const std::string &trainNumber, const std::string &start, const std::string &end, const size_t count) {
+		bool ReturnTicket(const string &trainNumber, const string &start, const string &end, const size_t count) {
 			// return true if succeed, false if fail
 			bool success = train.ReturnTicket(trainNumber, start, end, count);
 			if(success) {
@@ -74,9 +73,9 @@ private:
 			return success;
 		}
 		
-		void ModifyInformation(const std::string &nm, const std::string &pwd) {
+		void ModifyInformation(const string &nm, const string &pwd) {
 			name = nm;
-			ModifyPassword(pwd);
+			password = pwd;
 		}
 	};
 	
@@ -105,31 +104,31 @@ private:
 			
 		}
 		
-		const Log QueryUser(const std::string &userID) const {
+		const Log QueryUser(const string &userID) const {
 			return getUser(userID).mylog;
 		}
 		
-		void SystemHistory(const std::ofstream &fout) const {
+		void SystemHistory(const binofstream &fout) const {
 			AllUser::SystemHistory(fout);
 		}
 	};
 	
-	sjtu::map<std::string, User> map; // user's ID -> User 
+	sjtu::map<string, User> map; // user's ID -> User 
 	
 public:
 	AllUser() {}
 	~AllUser() {}
 	
-	User& getUser(const std::string &userID) {
+	User& getUser(const string &userID) {
 		return map[userID];
 	}
 	
-	bool Login(const std::string &userID, const std::string &pwd) const {
+	bool Login(const string &userID, const string &pwd) const {
 		// return true if succeed, false if fail
 		return map[userID].GetPassword() == pwd;
 	}
 	
-	bool Register(const std::string &name, const std::string userID, const std::string password = "000000") {
+	bool Register(const string &name, const string userID, const string password = "000000") {
 		// return true if succeed, false if fail
 		if(map.count(userID)) {
 			return false;
