@@ -7,6 +7,7 @@
 */
 
 #include "binfstream.hpp"
+#include <cstring>
 using std::string;
 
 class Time{
