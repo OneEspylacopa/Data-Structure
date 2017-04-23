@@ -6,10 +6,9 @@
   注意文件的输入输出时，ofstream 和 ifstream 不能同时关联同一个文件，否则使用本类型会出现乱码 
 */
 
-#include <cstring> 
-#include <iostream>
-using std::istream;
-using std::ostream;
+#include "binfstream.hpp"
+using std::binifstream;
+using std::binofstream;
 using std::string;
 
 class Time{
@@ -23,7 +22,7 @@ class Time{
 			minute = int(s[3] - '0') * 10 + int(s[4] - '0');
 		}
 			
-	friend ostream& operator<<(ostream& fout, const Time& obj)
+	friend binofstream& operator<<(binofstream& fout, const Time& obj)
 	{
 		if (obj.hour < 10) fout << 0 << obj.hour;	
 	    else fout << obj.hour;
@@ -32,7 +31,7 @@ class Time{
 	    else fout << obj.minute;
 	    return fout;
 	}
-	friend istream& operator>>(istream& fin, Time& obj)
+	friend binifstream& operator>>(binifstream& fin, Time& obj)
 	{
 		string str;
 		fin >> str; 
