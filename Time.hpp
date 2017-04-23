@@ -22,19 +22,15 @@ class Time{
 		}
 			
 	friend binofstream& operator<<(binofstream& fout, const Time& obj){
-		if (obj.hour < 10){
-			fout << 0 << obj.hour;
-		}
-		else {
-			fout << obj.hour;
-		}
-	    fout << ':';
-		if (obj.minute < 10) {
-			fout << 0 << obj.minute;
-		}
-		else {
-			fout << obj.minute;
-		}
+		char a[6];
+		a[0] = char(hour % 10 + '0');
+		a[1] = char(hour / 10 + '0');
+		a[2] = ':';
+		a[3] = char(minute % 10 + '0');
+		a[4] = char(minute / 10 + '0');
+		a[5] = '\0';
+		string str = a;
+		fout << str;
 		return fout;
 	}
 	friend binifstream& operator>>(binifstream& fin, Time& obj){
