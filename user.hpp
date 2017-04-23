@@ -5,12 +5,13 @@
 #include <cstring>
 #include "base.hpp"
 #include "map.hpp"
+#include "binfstream.hpp"
 
 using std::string;
 
 class AllUser {
 private:
-	static void SystemHistory(const std::ofstream &fout) {
+	static void SystemHistory(const binofstream &fout) {
 		// TODO
 	}
 	
@@ -27,17 +28,17 @@ private:
 		User(const string &name, const string &userID, const string &password) : name(name), userID(userID), password(password) { }
 		~User() {}
 		
-		friend std::ifstream& operator>>(std::ifstream &fin, User &rhs) {
+		friend binifstream& operator>>(binifstream &fin, User &rhs) {
 			fin >> rhs.name >> rhs.userID >> rhs.password >> rhs.mylog;
 			return fin;
 		}
-		friend std::ofstream& operator<<(std::ofstream &fout, const User &rhs) const {
-			fout << rhs.name << " " << rhs.userID << " " << rhs.password << std::endl;
+		friend binofstream& operator<<(binofstream &fout, const User &rhs) const {
+			fout << rhs.name << rhs.userID << rhs.password << std::endl;
 			return fout;
 		}
 		
-		void OutputLog(const std::ofstream &fout) const {
-			fout << mylog << std::endl;
+		void OutputLog(const binofstream &fout) const {
+			fout << mylog;
 		}
 		
 		string GetPassword() const {
@@ -107,7 +108,7 @@ private:
 			return getUser(userID).mylog;
 		}
 		
-		void SystemHistory(const ofstream &fout) const {
+		void SystemHistory(const binofstream &fout) const {
 			AllUser::SystemHistory(fout);
 		}
 	};
