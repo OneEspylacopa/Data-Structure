@@ -33,7 +33,7 @@ private:
 			return fin;
 		}
 		friend binofstream& operator<<(binofstream &fout, const User &rhs) const {
-			fout << rhs.name << rhs.userID << rhs.password << std::endl;
+			fout << rhs.name << rhs.userID << rhs.password;
 			return fout;
 		}
 		
