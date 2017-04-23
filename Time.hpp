@@ -21,17 +21,23 @@ class Time{
 			minute = int(s[3] - '0') * 10 + int(s[4] - '0');
 		}
 			
-	friend binofstream& operator<<(binofstream& fout, const Time& obj)
-	{
-		if (obj.hour < 10) fout << 0 << obj.hour;	
-	    else fout << obj.hour;
+	friend binofstream& operator<<(binofstream& fout, const Time& obj){
+		if (obj.hour < 10){
+			fout << 0 << obj.hour;
+		}
+		else {
+			fout << obj.hour;
+		}
 	    fout << ':';
-	    if (obj.minute < 10) fout << 0 << obj.minute;
-	    else fout << obj.minute;
-	    return fout;
+		if (obj.minute < 10) {
+			fout << 0 << obj.minute;
+		}
+		else {
+			fout << obj.minute;
+		}
+		return fout;
 	}
-	friend binifstream& operator>>(binifstream& fin, Time& obj)
-	{
+	friend binifstream& operator>>(binifstream& fin, Time& obj){
 		string str;
 		fin >> str; 
 		obj = Time(str);
