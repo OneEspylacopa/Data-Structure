@@ -4,6 +4,8 @@
 #include <fstream>
 #include <cstring>
 
+using std::string;
+
 class binfstream {
 protected:
 	FILE *fp;
@@ -36,6 +38,17 @@ public:
 		return *this;
 	}
 	
+	binifstream& operator>>(string &s) {
+		int len;
+		fread(&len, sizeof(int), 1, fp);
+		char *tmp = new char[len];
+		fread(tmp, sizeof(char), sizeof(char) * len, fp);
+		tmp[len] = '\0';
+		s = tmp;
+		delete []tmp;
+		return *this;
+	}
+	
 	template<class T>
 	binifstream& operator>>(T &x) {
 		fread(&x, sizeof(T), 1, fp);
@@ -55,6 +68,13 @@ public:
 		int len = strlen(s);
 		fwrite(&len, sizeof(int), 1, fp);
 		fwrite(s, sizeof(char), sizeof(char) * len, fp);
+		return *this;
+	}
+	
+	binofstream& operator<<(string s) {
+		int len = s.size();
+		fwrite(&len, sizeof(int), 1, fp);
+		fwrite(s.c_str(), sizeof(char), sizeof(char) * len, fp);
 		return *this;
 	}
 	
