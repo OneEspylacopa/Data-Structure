@@ -1,3 +1,6 @@
+#ifndef TIME_HPP
+#define TIME_HPP
+
 /*Time.hpp
   构造：Time(9,29),      注意这里若存在某个量为个位数则不需要补零 
         Time("09:29");   注意这里必须是标准的时间格式字符串（个位数补零） 
@@ -8,20 +11,22 @@
 
 #include "binfstream.hpp"
 #include <cstring>
+
 using std::string;
 
-class Time{
+class Time {
 	private:
 		int hour;
 		int minute;
+	
 	public:
-		Time(int _hour = 0, int _minute = 0):hour(_hour), minute(_minute){}
-		Time(const string& s){
+		Time(int _hour = 0, int _minute = 0) : hour(_hour), minute(_minute) { }
+		Time(const string& s) {
 			hour = int(s[0] - '0') * 10 + int(s[1] - '0');
 			minute = int(s[3] - '0') * 10 + int(s[4] - '0');
 		}
 			
-	friend binofstream& operator<<(binofstream& fout, const Time& obj){
+	friend binofstream& operator<<(binofstream& fout, const Time& obj) {
 		char a[6];
 		a[0] = char(hour % 10 + '0');
 		a[1] = char(hour / 10 + '0');
@@ -33,7 +38,7 @@ class Time{
 		fout << str;
 		return fout;
 	}
-	friend binifstream& operator>>(binifstream& fin, Time& obj){
+	friend binifstream& operator>>(binifstream& fin, Time& obj) {
 		string str;
 		fin >> str; 
 		obj = Time(str);
@@ -41,3 +46,4 @@ class Time{
 	}
 };
 
+#endif
