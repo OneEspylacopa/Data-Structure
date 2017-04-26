@@ -7,9 +7,6 @@
 
 class TrainSystem {
 private:
-	Train train;
-	Alluser user;
-	
 	binifstream iSystemHistory;
 	binifstream iTrainData;
 	binifstream iUserData;
@@ -26,7 +23,27 @@ public:
 	Base() : train(this), user(this) {}
 	~Base() {}
 	
-	void setInSystemHistory() {
+	void SetISystemHistory(const string &str) {
+		
+	}
+	
+	void SetITrainData(const string &str) {
+		
+	}
+	
+	void SetIUserData(const string &str) {
+		
+	}
+	
+	void SetOSystemHistory(const string &str) {
+		
+	}
+	
+	void SetOTrainData(const string &str) {
+		
+	}
+	
+	void SetOUserData(const string &str) {
 		
 	}
 };

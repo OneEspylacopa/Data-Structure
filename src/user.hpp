@@ -11,7 +11,8 @@ using std::string;
 
 class AllUser {
 private:
-	static void SystemHistory(const binofstream &fout) {
+	TrainSystem *sys;
+	static string SystemHistory() {
 		// TODO
 	}
 	
@@ -21,7 +22,7 @@ private:
 		string name; // username
 		string userID; // user's ID 
 		string password; // user's password 
-		Log mylog; // user's log
+		Log log; // user's log
 		
 	public:
 		User() {}
@@ -32,17 +33,30 @@ private:
 			fin >> rhs.name >> rhs.userID >> rhs.password >> rhs.mylog;
 			return fin;
 		}
-		friend binofstream& operator<<(binofstream &fout, const User &rhs) const {
-			fout << rhs.name << rhs.userID << rhs.password;
+		friend binofstream& operator<<(binofstream &fout, const User &rhs) {
+			fout << rhs.name << rhs.userID << rhs.password << rhs.mylog;
 			return fout;
 		}
 		
-		void OutputLog(const binofstream &fout) const {
-			fout << mylog;
+		void ModifyInfo(const string &_name, const string &_password) {
+			name = _name;
+			password = _password;
+		}
+		
+		string GetName() const {
+			return name;
+		}
+		
+		string GetID() const {
+			return userID;
 		}
 		
 		string GetPassword() const {
 			return password;
+		}
+		
+		Log GetLog() const {
+			return log;
 		}
 	};
 	
@@ -51,7 +65,7 @@ private:
 		GeneralUser() {}
 		~GeneralUser() {}
 		
-		TrainNumber QueryTicket(const ststring &start, const string &end, const Date &date) const {
+		TicketInfo QueryTicket(const string &start, const string &end, const Date &date) const {
 			return train.QueryTicket(start, end, date);
 		}
 		
@@ -71,11 +85,6 @@ private:
 				mylog.AddReturn(trainNumber, start, end, count);
 			}
 			return success;
-		}
-		
-		void ModifyInformation(const string &nm, const string &pwd) {
-			name = nm;
-			password = pwd;
 		}
 	};
 	
@@ -108,33 +117,30 @@ private:
 			return getUser(userID).mylog;
 		}
 		
-		void SystemHistory(const binofstream &fout) const {
-			AllUser::SystemHistory(fout);
+		string SystemHistory() const {
+			return AllUser::SystemHistory();
 		}
 	};
 	
 	sjtu::map<string, User> map; // user's ID -> User 
 	
 public:
-	AllUser() {}
+	AllUser(TrainSystem* sys) : sys(sys) {}
 	~AllUser() {}
 	
-	User& getUser(const string &userID) {
-		return map[userID];
-	}
-	
-	bool Login(const string &userID, const string &pwd) const {
-		// return true if succeed, false if fail
-		return map[userID].GetPassword() == pwd;
-	}
-	
-	bool Register(const string &name, const string userID, const string password = "000000") {
-		// return true if succeed, false if fail
-		if(map.count(userID)) {
-			return false;
+	User* GetUser(const string &userID) {
+		if(!map.count(userID)) {
+			return nullptr;
 		} else {
-			map.insert(sjtu::make_pair(userID, User(name, userID, password)));
-			return true;
+			return &map[userID];
+		}
+	}
+	
+	User* Register(const string &name, const string &userID, const string &password) {
+		if(map.count(userID)) {
+			return nullptr;
+		} else {
+			return &(map[userID] = User(name, userID, password));
 		}
 	}
 };
