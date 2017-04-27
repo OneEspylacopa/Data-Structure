@@ -66,23 +66,23 @@ private:
 		~GeneralUser() {}
 		
 		TicketInfo QueryTicket(const string &start, const string &end, const Date &date) const {
-			return train.QueryTicket(start, end, date);
+			return sys->train.QueryTicket(start, end, date);
 		}
 		
 		bool BookTicket(const string &trainNumber, const string &start, const string &end, const size_t count) {
 			// return true if succeed, false if fail
-			bool success = train.BookTicket(trainNumber, start, end, count);
+			bool success = sys->train.BookTicket(trainNumber, start, end, count);
 			if(success) {
-				mylog.AddBook(trainNumber, start, end, count);
+				log.AddBook(trainNumber, start, end, count);
 			}
 			return success;
 		}
 		
 		bool ReturnTicket(const string &trainNumber, const string &start, const string &end, const size_t count) {
 			// return true if succeed, false if fail
-			bool success = train.ReturnTicket(trainNumber, start, end, count);
+			bool success = sys->train.ReturnTicket(trainNumber, start, end, count);
 			if(success) {
-				mylog.AddReturn(trainNumber, start, end, count);
+				log.AddReturn(trainNumber, start, end, count);
 			}
 			return success;
 		}
@@ -114,7 +114,7 @@ private:
 		}
 		
 		const Log QueryUser(const string &userID) const {
-			return getUser(userID).mylog;
+			return GetUser(userID).mylog;
 		}
 		
 		string SystemHistory() const {

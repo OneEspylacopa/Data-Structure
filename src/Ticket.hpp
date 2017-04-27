@@ -5,7 +5,7 @@
 
 const int SEAT_TYPE_NUM = 12;
 
-enum TicketType {
+enum SeatType {
 	FirstClass, // 一等座 
 	SecondClass, // 二等座
 	NoSeat, // 无座 

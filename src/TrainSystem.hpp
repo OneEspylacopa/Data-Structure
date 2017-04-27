@@ -1,50 +1,46 @@
-#ifndef BASE_HPP
-#define BASE_HPP
+#ifndef TRAINSYSTEM_HPP
+#define TRAINSYSTEM_HPP
 
-#include <binfstream>
-#include "train.hpp"
-#include "user.hpp"
+#include "Train.hpp"
+#include "User.hpp"
+
+using std::string;
 
 class TrainSystem {
 private:
-	binifstream iSystemHistory;
-	binifstream iTrainData;
-	binifstream iUserData;
-	
-	binofstream oSystemHistory;
-	binofstream oTrainData;
-	binofstream oUserData;
+	string pathSystemHistory;
+	string pathTrainData;
+	string pathUserData;
 	
 public:
 	Train train;
 	AllUser user;
 	
+	TrainSystem() : train(this), user(this) { }
+	~TrainSystem() { }
 	
-	Base() : train(this), user(this) {}
-	~Base() {}
-	
-	void SetISystemHistory(const string &str) {
-		
+	void SetSystemHistory(const string &str) {
+		pathSystemHistory = str;
 	}
 	
-	void SetITrainData(const string &str) {
-		
+	void SetTrainData(const string &str) {
+		pathTrainData = str;
 	}
 	
-	void SetIUserData(const string &str) {
-		
+	void SetUserData(const string &str) {
+		pathUserData = str;
 	}
 	
-	void SetOSystemHistory(const string &str) {
-		
+	string GetSystemHistory() const {
+		return pathSystemhistory;
 	}
 	
-	void SetOTrainData(const string &str) {
-		
+	string GetTrainData() const {
+		return pathTraindata;
 	}
 	
-	void SetOUserData(const string &str) {
-		
+	string GetUserData() const {
+		return pathUserData;
 	}
 };
 
