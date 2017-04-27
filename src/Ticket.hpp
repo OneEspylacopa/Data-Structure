@@ -6,34 +6,36 @@
 const int SEAT_TYPE_NUM = 12;
 
 enum SeatType {
-	FirstClass, // 一等座 
-	SecondClass, // 二等座
-	NoSeat, // 无座 
-	BusinessSeat, // 商务座 
-	HardSeat, // 硬座
-	SoftSeat, // 软座
-	HardSleeperUp, // 硬卧上
-	HardSleeperMiddle, // 硬卧中 
-	HardSleeperDown, // 硬卧下
-	SoftSleeperDown, // 软卧下
-	AdvancedSoftSleeper, // 高级软卧
-	SpecialSeat //特等座 
+	FirstClass = 0, // 一等座 
+	SecondClass = 1, // 二等座
+	NoSeat = 2, // 无座 
+	BusinessSeat = 3, // 商务座 
+	HardSeat = 4, // 硬座
+	SoftSeat = 5, // 软座
+	HardSleeperUp = 6, // 硬卧上
+	HardSleeperMiddle = 7, // 硬卧中 
+	HardSleeperDown = 8, // 硬卧下
+	SoftSleeperDown = 9, // 软卧下
+	AdvancedSoftSleeper = 10, // 高级软卧
+	SpecialSeat = 11 //特等座 
 };
 
 class TickInfo {
 public:
+	string trainNumber;
 	string start;
 	string end;
 	Date date;
-	int price;
 	SeatType type;
+	int price;
 	
-	TicketInfo(const string &start, const string &end, const Date &date, const int &price, const SeatType type) :
+	TicketInfo(const string &trainNumber, const string &start, const string &end, const Date &date, const SeatType type, const int &price) :
+		trainNumber(trainNumber)
 		start(start),
 		end(end),
 		date(date),
-		price(price),
-		type(type)
+		type(type),
+		price(price)
 	{ }
 };
 

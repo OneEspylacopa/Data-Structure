@@ -27,13 +27,13 @@ public:
 		return stations;
 	}
 	
-	bool BookTicket(const string &start, const string &end, const SeatType type, const size_t count) {
+	bool BookTicket(const TicketInfo &info) {
 		vector<station>::iterator it_start = stations.end(), it_end = stations.end();
 		
 		for(vector<station>::iterator it = stations.begin(); it != stations.end(); it++) {
-			if(it->name == start) {
+			if(it->name == info.start) {
 				it_start = it;
-			} else if(it->name == end) {
+			} else if(it->name == info.end) {
 				it_end = it;
 			}
 		}
@@ -42,7 +42,7 @@ public:
 		
 		if(it_start != stations.end() && it_end != stations.end()) {
 			for(vector<station>::iterator it = it_start; it != it_end; it++) {
-				if(it->seatCount[(int) type] < count) {
+				if(it->seatCount[(int) type] < info.count) {
 					flag = false;
 					break;
 				}
@@ -53,27 +53,29 @@ public:
 			}
 			
 			for(vector<station>::iterator it = it_start; it != it_end; it++) {
-				it->seatCount[(int) type] -= count;
+				it->seatCount[(int) type] -= info.count;
 			}
+			
+			return true;
 		} else {
 			return false;
 		}
 	}
 	
-	bool ReturnTicket(const string &start, const string &end, const SeatType type, const size_t count) {
+	bool ReturnTicket(const TicketInfo &info) {
 		vector<station>::iterator it_start = stations.end(), it_end = stations.end();
 		
 		for(vector<station>::iterator it = stations.begin(); it != stations.end(); it++) {
-			if(it->name == start) {
+			if(it->name == info.start) {
 				it_start = it;
-			} else if(it->name == end) {
+			} else if(it->name == info.end) {
 				it_end = it;
 			}
 		}
 		
 		if(it_start != stations.end() && it_end != stations.end()) {
 			for(vector<station>::iterator it = it_start; it != it_end; it++) {
-				it->seatCount[(int) type] += count;
+				it->seatCount[(int) type] += info.count;
 			}
 		} else {
 			return false;
@@ -91,20 +93,20 @@ public:
 		return train;
 	}
 	
-	bool BookTicket(const string &trainNumber, const string &start, const string &end, const SeatType type, const size_t count) {
+	bool BookTicket(const TicketInfo &info) {
 		for(vector<TrainNumber>::iterator it = train.begin(); it != train.end(); it++) {
-			if(it->GetNumber == trainNumber) {
-				it->BookTicket(start, end, type, count);
+			if(it->GetNumber() == info.trainNumber) {
+				it->BookTicket(info);
 				return true;
 			}
 		}
 		return false;
 	}
 	
-	bool ReturnTicket(const string &trainNumber, const string &start, const string &end, const SeatType type, const size_t count) {
+	bool ReturnTicket(const TicketInfo &info) {
 		for(vector<TrainNumber>::iterator it = train.begin(); it != train.end(); it++) {
-			if(it->GetNumber() == trainNumber) {
-				it->ReturnTicket(start, end, type, count);
+			if(it->GetNumber() == info.trainNumber) {
+				it->ReturnTicket(info);
 				return true;
 			}
 		}
@@ -125,15 +127,15 @@ public:
 		return trains[date];
 	}
 	
-	bool BookTicket(const Date &date, const string &trainNumber, const string &start, const string &end, const SeatType type, const size_t count) {
-		return trains[date].BookTicket(trainNumber, start, end, type, count);
+	bool BookTicket(const TicketInfo info) {
+		return trains[info.date].BookTicket(info);
 	}
 	
-	bool ReturnTicket(const Date &date, const string &trainNumber, const string &start, const string &end, const SeatType type, const size_t count) {
-		if(!trains.count(date)) {
+	bool ReturnTicket(const TicketInfo &info) {
+		if(!trains.count(info.date)) {
 			return false;
 		} else {
-			return trains[date].ReturnTicket(trainNumber, start, end, type, count);
+			return trains[info.date].ReturnTicket(info);
 		}
 	}
 };

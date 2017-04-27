@@ -69,20 +69,20 @@ private:
 			return sys->train.QueryTicket(start, end, date);
 		}
 		
-		bool BookTicket(const string &trainNumber, const string &start, const string &end, const size_t count) {
+		bool BookTicket(const string &trainNumber, const string &start, const string &end, const SeatType &type, const size_t count) {
 			// return true if succeed, false if fail
-			bool success = sys->train.BookTicket(trainNumber, start, end, count);
+			bool success = sys->train.BookTicket(trainNumber, start, end, type, count);
 			if(success) {
-				log.AddBook(trainNumber, start, end, count);
+				log.AddBook(trainNumber, start, end, type, count);
 			}
 			return success;
 		}
 		
-		bool ReturnTicket(const string &trainNumber, const string &start, const string &end, const size_t count) {
+		bool ReturnTicket(const string &trainNumber, const string &start, const string &end, const SeatType &type, const size_t count) {
 			// return true if succeed, false if fail
-			bool success = sys->train.ReturnTicket(trainNumber, start, end, count);
+			bool success = sys->train.ReturnTicket(trainNumber, start, end, type, count);
 			if(success) {
-				log.AddReturn(trainNumber, start, end, count);
+				log.AddReturn(trainNumber, start, end, type, count);
 			}
 			return success;
 		}
