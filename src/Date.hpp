@@ -40,7 +40,8 @@ class Date{
 			return str;	
 		}
 		friend binofstream& operator<<(binofstream &fout, const Date& date){   //友元函数无法加const？... 
-			fout << date.year << '-' << setfill('0') << setw(2) << date.month << '-' <<date.day;
+			string str = date.GetDate();
+			fout << str;
 			return fout;
 		}
 		friend binifstream& operator>>(binifstream &fin, Date& date) {
