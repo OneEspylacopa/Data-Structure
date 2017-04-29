@@ -14,7 +14,11 @@ class Date{
 		int month;
 		int day;
 	public:
-		Date(){year = 0;month = 0;day = 0;};
+		Date(){
+			year = 0;
+			month = 0;
+			day = 0;
+		}
 		Date(const string& str) {
 			for(int i = 0;i < 4;i++)
 				year = year * 10 + str[i] - '0';
@@ -26,7 +30,6 @@ class Date{
 				year = year * 10 + str[i] - '0';
 				month = (str[5] - '0')*10 + str[6] - '0';
 				day = (str[8] - '0')*10 + str[9] - '0';
-				cout<<year<<" "<<month<<" "<<day<<endl;
 		}
 		string GetDate()const{
 			char str[11];
@@ -36,7 +39,8 @@ class Date{
 			for(int i = 6;i >= 5;i--,m/=10)
 				str[i] = m % 10 + '0';
 			for(int i = 9;i >= 8;i--,d/=10)
-				str[i] = d % 10 + '0';	
+				str[i] = d % 10 + '0';
+					
 				str[4] = str[7]  = '-';
 				str[10] = '\0';
 			string ans = str;
