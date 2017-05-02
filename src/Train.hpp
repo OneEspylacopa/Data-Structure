@@ -16,7 +16,6 @@ private:
 	string number;
 	vector<Station> stations;
 	
-	
 public:
 	
 	TrainNumber(const string &number) : number(number) { }
