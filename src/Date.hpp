@@ -43,6 +43,13 @@ class Date{
 			return ans;	
 		}
 		bool operator<(const Date &date){          //Ğ¡ÓÚ ¼´ÔçÓÚ 
+			if(year != date.year) {
+				return year < date.year;
+			}
+			if(month != date.month) {
+				return month < date.month;
+			}
+			return
 			if(year > date.year)return false;
 			else if (year < date.year)return true;
 			if(month > date.month)return false;
