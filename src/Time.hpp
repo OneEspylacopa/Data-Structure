@@ -6,11 +6,11 @@ Time("09:29");   注意这里必须是标准的时间格式字符串（个位数补零）
 注意文件的输入输出时，ofstream 和 ifstream 不能同时关联同一个文件，否则使用本类型会出现乱码
 */
 
-#ifndef binfstream
-	#definde binfstream
-	#include <cstring>
-#endif // !binfstream
+#ifndef TIME_HPP
+#definde TIME_HPP
 
+#include <cstring>
+#include "binfstream.hpp"
 using std::string;
 
 class Time {
@@ -58,5 +58,5 @@ public:
 		return fin;
 	}
 };
-
+#endif
 
