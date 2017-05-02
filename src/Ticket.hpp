@@ -20,7 +20,7 @@ enum SeatType {
 	SpecialSeat = 11 //ÌØµÈ×ù 
 };
 
-class TickInfo {
+class TicketInfo {
 public:
 	string trainNumber;
 	string start;
@@ -30,7 +30,7 @@ public:
 	int price;
 	
 	TicketInfo(const string &trainNumber, const string &start, const string &end, const Date &date, const SeatType type, const int &price) :
-		trainNumber(trainNumber)
+		trainNumber(trainNumber),
 		start(start),
 		end(end),
 		date(date),

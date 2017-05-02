@@ -2,7 +2,8 @@
 #define USER_HPP
 
 #include <cstring>
-#include "base.hpp"
+
+#include "TrainSystem.hpp"
 #include "map.hpp"
 #include "binfstream.hpp"
 
@@ -70,18 +71,18 @@ private:
 		
 		bool BookTicket(const TicketInfo &info) {
 			// return true if succeed, false if fail
-			bool success = sys->train.BookTicket(TicketInfo &info);
+			bool success = sys->train.BookTicket(info);
 			if(success) {
-				log.AddBook();
+				log.AddBook(info);
 			}
 			return success;
 		}
 		
-		bool ReturnTicket(const string &trainNumber, const string &start, const string &end, const SeatType &type, const size_t count) {
+		bool ReturnTicket(const TicketInfo &info) {
 			// return true if succeed, false if fail
-			bool success = sys->train.ReturnTicket(trainNumber, start, end, type, count);
+			bool success = sys->train.ReturnTicket(info);
 			if(success) {
-				log.AddReturn(trainNumber, start, end, type, count);
+				log.AddReturn(info);
 			}
 			return success;
 		}
