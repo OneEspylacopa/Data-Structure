@@ -1,6 +1,8 @@
 #ifndef TRAINSYSTEM_HPP
 #define TRAINSYSTEM_HPP
 
+#include <cstring>
+
 #include "Train.hpp"
 #include "User.hpp"
 

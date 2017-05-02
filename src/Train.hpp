@@ -2,13 +2,16 @@
 #define TRAIN_HPP
 
 #include <string>
+
 #include "TrainSystem.hpp"
 #include "Date.hpp"
 #include "vector.hpp"
 #include "Station.hpp"
 #include "Ticket.hpp"
+#include "vector.hpp"
 
 using std::string;
+using sjtu::vector;
 
 class TrainNumber {
 private:
@@ -28,9 +31,9 @@ public:
 	}
 	
 	bool BookTicket(const TicketInfo &info) {
-		vector<station>::iterator it_start = stations.end(), it_end = stations.end();
+		vector<Station>::iterator it_start = stations.end(), it_end = stations.end();
 		
-		for(vector<station>::iterator it = stations.begin(); it != stations.end(); it++) {
+		for(vector<Station>::iterator it = stations.begin(); it != stations.end(); it++) {
 			if(it->name == info.start) {
 				it_start = it;
 			} else if(it->name == info.end) {
@@ -41,7 +44,7 @@ public:
 		bool flag = true;
 		
 		if(it_start != stations.end() && it_end != stations.end()) {
-			for(vector<station>::iterator it = it_start; it != it_end; it++) {
+			for(vector<Station>::iterator it = it_start; it != it_end; it++) {
 				if(it->seatCount[(int) type] < info.count) {
 					flag = false;
 					break;
@@ -52,7 +55,7 @@ public:
 				return false;
 			}
 			
-			for(vector<station>::iterator it = it_start; it != it_end; it++) {
+			for(vector<Station>::iterator it = it_start; it != it_end; it++) {
 				it->seatCount[(int) type] -= info.count;
 			}
 			
