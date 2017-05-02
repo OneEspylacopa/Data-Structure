@@ -1,62 +1,82 @@
 #ifndef LOG_HPP
 #define LOG_HPP
-#include "vector.hpp"
+#include"vector.hpp"
 #include"binfstream.hpp"
 #include<string>
 #include"Date.hpp"
 #include"Time.hpp"
+#include"Ticket.hpp"
 class Log{
 private:
-	int n;
-	sjtu::vector<std::string> name;
-	sjtu::vector<std::string> userID;
-	sjtu::vector<std::string> change;
-	sjtu::vector<int> number;
-	sjtu::vector<std::string> tickettype;
-	sjtu::vector<std::string> trainID;
-	sjtu::vector<std::string> start;
-	sjtu::vector<std::string> end;
-    sjtu::vector<Date> day;
-    sjtu::vector<Time> onesecondmore;
+	std::string GetInt(double x)
+	{
+		std::string s = "";
+		int y = int (x);
+		while (y != 0)
+		{
+			s += (y % 10) + '0';
+			y /= 10;
+		}
+		x = x - y;
+		s += '.'; 
+		s += int (10 * x) + '0';
+		return s;
+    }
+	std::string GetCHN(SeatType t)
+	{
+		std::string s = "";
+		if (t == FirstClass) s += "一等座"; 
+		if (t == SecondClass) s += "二等座";
+		if (t == NoSeat) s += "无座";
+		if (t == BusinessSeat) s += "商务座";
+		if (t == HardSeat) s += "硬座";
+		if (t == SoftSeat) s += "软座";
+		if (t == HardSleeperUp) s += "硬卧上";
+		if (t == HardSleeperMiddle) s += "硬卧中";
+		if (t == HardSleeperDown) s += "硬卧下";
+		if (t == SoftSleeperDown) s += "软卧下";
+		if (t == AdvancedSoftSleeper) s += "高级软卧";
+		if (t == SpecialSeat) s += "特等座";
+		return s;
+	}
+	static int n;
 public:
+	static sjtu::vector<std::string>logs;
 	Log() {
 		n = 0;
 	}
-	void AddBook(const std::string a,const std::string b,const int c,const std::string d,const std::string e,const std::string f,const std::string g,const Date h,const Time i){
+	void AddBook(const TicketInfo &info){
 	    ++n;
-	    name.push_back(a);
-	    userID.push_back(b);
-	    change.push_back("bought");
-	    number.push_back(c);
-	    tickettype.push_back(d);
-	    trainID.push_back(e);
-	    start.push_back(f);
-	    end.push_back(g);
-	    day.push_back(h);
-	    onesecondmore.push_back(i);
+	    std::string s;
+	    s = "bought";
+	    s += info.trainNumber + info.start + info.end + Date::GetDate(info.date) + Time::GetTime(info.time) +  GetCHN(info.type) + GetInt(info.price);
+	    logs.push_back(s);
 	}
-	void AddReturn(const std::string a,const std::string b,const int c,const std::string d,const std::string e,const std::string f,const std::string g,const Date h,const Time i){
+	void AddReturn(const TicketInfo &info){
 		++n;
-		name.push_back(a);
-	    userID.push_back(b);
-	    change.push_back("refunded");
-	    number.push_back(c);
-	    tickettype.push_back(d);
-	    trainID.push_back(e);
-	    start.push_back(f);
-	    end.push_back(g);
-	    day.push_back(h);
-	    onesecondmore.push_back(i);
+	    std::string s;
+	    s = "refunded";
+	    s += info.trainNumber + info.start + info.end + Date::GetDate(info.date) + Time::GetTime(info.time) +  GetCHN(info.type) + GetInt(info.price);
+	    logs.push_back(s);
 	}
-	void Print(){
-		binofstream f1("D:\\Log.txt");
-		for (int i = 1;i <= n;i++){
-		    f1<<name[i]<<' '<<userID[i]<<' '<<change[i]<<' '<<number[i]<<' '<<tickettype[i]<<" tickets of "
-			    trainID[i]<<" from "<<start[i]<<" to "<<end[i]<<" in "<<day[i]<<" at "<<onsecondmore[i]<<'\n';
-		    
-		}
-		f1.close();
-	}
+    friend binofstream& operator << (binofstream &fout, const Log &log)
+    {
+    	fout<<n<<'\n';
+    	for (int i = 1;i <= n;++i) fout<<logs[i]<<'\n';
+    	return fout;
+    }
+    friend binofstream& operator >> (binofstream &fin, Log &log)
+    {
+    	int n0;
+    	fin>>n0;
+    	for (int i = 1;i <= n0;++i)
+    	{
+    		std::string s;
+    		fin>>s;
+    		logs.push_back(s);
+    	}
+    	return fin;
+    }
 	~Log(){
 	}
 };
