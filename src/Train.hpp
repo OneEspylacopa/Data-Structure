@@ -2,6 +2,7 @@
 #define TRAIN_HPP
 
 #include <string>
+
 #include "TrainSystem.hpp"
 #include "Date.hpp"
 #include "vector.hpp"
