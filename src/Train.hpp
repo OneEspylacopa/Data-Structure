@@ -9,11 +9,13 @@
 #include "Ticket.hpp"
 
 using std::string;
+using sjtu::map;
 
 class TrainNumber {
 private:
 	string number;
 	vector<Station> stations;
+	
 	
 public:
 	
