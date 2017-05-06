@@ -7,7 +7,7 @@ Time("09:29");   注意这里必须是标准的时间格式字符串（个位数补零）
 */
 
 #ifndef TIME_HPP
-#definde TIME_HPP
+#define TIME_HPP
 
 #include <cstring>
 #include "binfstream.hpp"

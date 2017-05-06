@@ -26,16 +26,20 @@ public:
 	string start;
 	string end;
 	Date date;
+	Time time;
 	SeatType type;
 	int price;
+	int count;
 	
-	TicketInfo(const string &trainNumber, const string &start, const string &end, const Date &date, const SeatType type, const int &price) :
+	TicketInfo(const string &trainNumber, const string &start, const string &end, const Date &date, const Time &time, const SeatType type, const int &price, const int count) :
 		trainNumber(trainNumber),
 		start(start),
 		end(end),
 		date(date),
+		time(time),
 		type(type),
-		price(price)
+		price(price),
+		count(count)
 	{ }
 };
 

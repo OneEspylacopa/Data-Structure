@@ -46,7 +46,7 @@ class Date{
 			string ans = str;
 			return ans;	
 		}
-		bool operator<(const Date &date){          //?? ??? 
+		bool operator<(const Date &date) const {          //?? ??? 
 			if(year != date.year){
 				return year < date.year;
 			}
