@@ -10,7 +10,7 @@ class Log{
 private:
 	std::string GetInt(double x)
 	{
-		std::string s = "";
+		std::string s = '';
 		int y = int (x);
 		while (y != 0)
 		{
@@ -24,10 +24,10 @@ private:
     }
 	std::string GetCHN(SeatType t)
 	{
-		std::string s = "";
-		if (t == FirstClass) s += "一等座"; 
+		std::string s = '';
+		if (t == Firstclass) s += "一等座"; 
 		if (t == SecondClass) s += "二等座";
-		if (t == NoSeat) s += "无座";
+		if (t == Noseat) s += "无座";
 		if (t == BusinessSeat) s += "商务座";
 		if (t == HardSeat) s += "硬座";
 		if (t == SoftSeat) s += "软座";
@@ -39,9 +39,9 @@ private:
 		if (t == SpecialSeat) s += "特等座";
 		return s;
 	}
-	static int n;
 public:
-	static sjtu::vector<std::string>logs;
+	sjtu::vector<std::string>logs;
+	
 	Log() {
 		n = 0;
 	}
@@ -49,20 +49,20 @@ public:
 	    ++n;
 	    std::string s;
 	    s = "bought";
-	    s += info.trainNumber + info.start + info.end + Date::GetDate(info.date) + Time::GetTime(info.time) +  GetCHN(info.type) + GetInt(info.price);
+	    s += info.trainNumber + info.start + info.end +info.date.GetDate() + info.time.GetTime() +  GetCHN(info.type) + GetInt(info.price);
 	    logs.push_back(s);
 	}
 	void AddReturn(const TicketInfo &info){
 		++n;
 	    std::string s;
 	    s = "refunded";
-	    s += info.trainNumber + info.start + info.end + Date::GetDate(info.date) + Time::GetTime(info.time) +  GetCHN(info.type) + GetInt(info.price);
+	    s += info.trainNumber + info.start + info.end +info.date.GetDate() + info.time.GetTime()+  GetCHN(info.type) + GetInt(info.price);
 	    logs.push_back(s);
 	}
     friend binofstream& operator << (binofstream &fout, const Log &log)
     {
     	fout<<n<<'\n';
-    	for (int i = 1;i <= n;++i) fout<<logs[i]<<'\n';
+    	for (int i = 1;i <= n;++i) fout<<log[i]<<'\n';
     	return fout;
     }
     friend binofstream& operator >> (binofstream &fin, Log &log)
@@ -73,7 +73,7 @@ public:
     	{
     		std::string s;
     		fin>>s;
-    		logs.push_back(s);
+    		log.push_back(s);
     	}
     	return fin;
     }
