@@ -49,7 +49,7 @@ public:
 	GeneralUser();
 	~GeneralUser();
 	
-	TicketInfo QueryTicket(const string &start, const string &end, const Date &date) const;
+	vector<TicketInfo> QueryTicket(const string &start, const string &end, const Date &date) const;
 	
 	bool BookTicket(const TicketInfo &info);
 	bool ReturnTicket(const TicketInfo &info);

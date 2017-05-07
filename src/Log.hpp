@@ -39,7 +39,7 @@ private:
 		return s;
 	}
 public:
-	sjtu::vector<std::string>logs;
+	sjtu::vector<std::string> logs;
 	
 	Log() { }
 	
@@ -73,8 +73,7 @@ public:
     	}
     	return fin;
     }
-	~Log() {
-	}
+	~Log() { }
 };
 
 #endif

@@ -26,7 +26,7 @@ Log User::GetLog() const {
 GeneralUser::GeneralUser() : User(sys) {}
 GeneralUser::~GeneralUser() {}
 
-TicketInfo GeneralUser::QueryTicket(const string &start, const string &end, const Date &date) const {
+vector<TicketInfo> GeneralUser::QueryTicket(const string &start, const string &end, const Date &date) const {
 	return sys->train.QueryTicket(start, end, date);
 }
 

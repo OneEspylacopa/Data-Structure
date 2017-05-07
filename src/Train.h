@@ -31,11 +31,17 @@ public:
 };
 
 class TrainDay {
-public:
+private:
+	map<string, TrainNumber*> numberMap;
 	vector<TrainNumber> train;
 	
+	TrainNumber* GetNumber(const string &number) const;
+	
+public:
 	bool BookTicket(const TicketInfo &info);
 	bool ReturnTicket(const TicketInfo &info);
+	
+	vector<TicketInfo> QueryTicket(const string &start, const string &end) const;
 };
 
 class Train {
@@ -51,7 +57,7 @@ public:
 	
 	bool BookTicket(const TicketInfo info);
 	bool ReturnTicket(const TicketInfo &info);
-	TicketInfo QueryTicket(const string &start, const string &end, const Date &date) const;
+	vector<TicketInfo> QueryTicket(const string &start, const string &end, const Date &date) const;
 };
 
 #endif
