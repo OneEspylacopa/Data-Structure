@@ -2,6 +2,8 @@
 #define TRAINSYSTEM_H
 
 #include <string>
+#include "binfstream.hpp"
+#include "SHA512.hpp"
 using std::string;
 
 class TrainSystem;

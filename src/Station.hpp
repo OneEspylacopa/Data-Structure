@@ -2,6 +2,7 @@
 #define STATION_HPP
 
 #include <cstring>
+#include "binfstream.hpp"
 
 #include "Time.hpp"
 #include "Ticket.hpp"
@@ -21,6 +22,21 @@ public:
 		for(int i = 0; i < SEAT_TYPE_NUM; i++) {
 			this->seatCount[i] = seatCount[i];
 		}
+	}
+
+	binifstream operator>>(binifstream &fin) {
+		fin >> name >> arriveTime >> stopTime >> mileage;
+		for(int i = 0; i < SEAT_TYPE_NUM; i++) {
+			fin >> seatCount[i];
+		}
+		return fin;
+	}
+	binofstream operator<<(binofstream &fout) {
+		fout << name << arriveTime << stopTime << mileage;
+		for(int i = 0; i < SEAT_TYPE_NUM; i++) {
+			fout << seatCount[i];
+		}
+		return fout;
 	}
 };
 

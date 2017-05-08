@@ -60,11 +60,11 @@ public:
 	Administrator();
 	~Administrator();
 	
-	void AddPlan();
-	bool ModifyPlan();
-	bool CancelPlan();
-	bool BeginToSell();
-	bool StopToSell();
+	bool AddPlan(const Date &date, const TrainNumber &trainNumber);
+	bool ModifyPlan(const Date &date, const TrainNumber &trainNumber);
+	bool CancelPlan(const Date &date, const string &number);
+	bool StartSelling(const Date &date, const string &number);
+	bool StopSelling(const Date &date, const string &number);
 	
 	const Log QueryUser(const string &userID) const;
 	
@@ -83,11 +83,13 @@ public:
 	~AllUser();
 	
 	User* GetUser(const string &userID);
+	User* Login(const string &userID, const string &password);
 	User* Register(const string &name, const string &userID, const string &password);
 	
-	static string SystemHistory() {
-		//TODO
-	}
+	string SystemHistory() const;
+	
+	binifstream& operator>>(binifstream &fin);
+	binofstream& operator<<(binofstream &fout);
 };
 
 #endif

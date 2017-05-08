@@ -1,6 +1,10 @@
 #include "TrainSystem.h"
 
 ///////////////TrainNumber///////////////
+TrainNumber::TrainNumber(const string &number) : number(number) {
+	selling = false;
+	canceled = false;
+}
 string TrainNumber::GetNumber() const {
 	return number;
 }	
@@ -57,7 +61,25 @@ bool TrainNumber::ReturnTicket(const TicketInfo &info) {
 		return false;
 	}
 }
-
+bool TrainNumber::StartSelling() {
+	if(selling == true) {
+		return false;
+	} else {
+		selling = true;
+		return true;
+	}
+}
+bool TrainNumber::StopSelling() {
+	if(selling == true) {
+		return false;
+	} else {
+		selling = true;
+		return true;
+	}
+}
+void TrainNumber::Cancel() {
+	canceled = true;
+}
 ///////////////TrainDay///////////////
 bool TrainDay::BookTicket(const TicketInfo &info) {
 	if(!numberMap.count(info.trainNumber)) {
@@ -75,7 +97,7 @@ bool TrainDay::ReturnTicket(const TicketInfo &info) {
 		return true;
 	}
 }
-TrainNumber* TrainDay::GetNumber(const string &number) const {
+vector<TrainNumber>::iterator TrainDay::GetNumber(const string &number) const {
 	if(!numberMap.count(number)) {
 		return nullptr;
 	} else {
@@ -115,6 +137,78 @@ vector<TicketInfo> TrainDay::QueryTicket(const string &start, const string &end)
 	}
 	return res;
 }
+
+bool TrainDay::StartSelling(const string &number) {
+	if(!numberMap.count(number)) {
+		return false;
+	} else {
+		return numberMap[number]->StartSelling();
+	}
+}
+bool TrainDay::StopSelling(const string &number) {
+	if(!numberMap.count(number)) {
+		return false;
+	} else {
+		return numberMap[number]->StopSelling();
+	}
+}
+bool TrainDay::AddPlan(const TrainNumber &trainNumber) {
+	const string number = trainNumber.GetNumber();
+	if(numberMap.count(number)) {
+		return false;
+	} else {
+		train.push_back(trainNumber);
+		numberMap[number] = --train.end();
+		return true;
+	}
+}
+bool TrainDay::ModifyPlan(const TrainNumber &trainNumber) {
+	const string number = trainNumber.GetNumber();
+	if(!numberMap.count(number)) {
+		return false;
+	} else {
+		(*numberMap[number]) = trainNumber;
+		return true;
+	}
+}
+bool TrainDay::CancelPlan(const string &number) {
+	if(!numberMap.count(number)) {
+		return false;
+	} else {
+		numberMap[number]->Cancel();
+		numberMap.erase(numberMap.find(number));
+		return true;
+	}
+}
+binifstream& TrainDay::operator>>(binifstream &fin) {
+	vector<TrainNumber> &vec = train;
+	
+	size_t size;
+	fin >> size;
+	
+	train.clear();
+	train.resize(size);
+	for(size_t i = 0; i < size; i++) {
+		fin >> vec[i];
+	}
+	
+	numberMap.clear();
+	for(vector<TrainNumber>::iterator it = vec.begin(); it != vec.end(); it++) {
+		numberMap[it->GetNumber()] = it;
+	}
+	return fin;
+}
+binofstream& TrainDay::operator<<(binofstream &fout) {
+	const vector<TrainNumber> &vec = train;
+	
+	size_t size = vec.size();
+	fout << size;
+	
+	for(size_t i = 0; i < size; i++) {
+		fout << vec[i];
+	}
+	return fout;
+}
 ///////////////Train///////////////
 Train::Train(TrainSystem *sys) : sys(sys) { }
 Train::~Train() { }
@@ -122,7 +216,6 @@ Train::~Train() { }
 bool Train::BookTicket(const TicketInfo info) {
 	return trains[info.date].BookTicket(info);
 }
-
 bool Train::ReturnTicket(const TicketInfo &info) {
 	if(!trains.count(info.date)) {
 		return false;
@@ -130,9 +223,46 @@ bool Train::ReturnTicket(const TicketInfo &info) {
 		return trains[info.date].ReturnTicket(info);
 	}
 }
-
-
 vector<TicketInfo> Train::QueryTicket(const string &start, const string &end, const Date &date) const {
 	return trains[date].QueryTicket(start, end);
 }
 
+bool Train::StartSelling(const Date &date, const string &number) {
+	if(!trains.count(date)) {
+		return false;
+	} else {
+		return trains[date].StartSelling(number);
+	}
+}
+bool Train::StopSelling(const Date &date, const string &number) {
+	if(!trains.count(date)) {
+		return false;
+	} else {
+		return trains[date].StopSelling(number);
+	}
+}
+bool Train::AddPlan(const Date &date, const TrainNumber &trainNumber) {
+	return trains[date].AddPlan(trainNumber);
+}
+bool Train::ModifyPlan(const Date &date, const TrainNumber &trainNumber) {
+	if(!trains.count(date)) {
+		return false;
+	} else {
+		return trains[date].ModifyPlan(trainNumber);
+	}
+}
+bool Train::CancelPlan(const Date &date, const string &number) {
+	if(!trains.count(date)) {
+		return false;
+	} else {
+		return trains[date].CancelPlan(number);
+	}
+}
+binifstream& Train::operator>>(binifstream &fin) {
+	fin >> trains;
+	return fin;
+}
+binofstream& Train::operator<<(binofstream &fout) {
+	fout << trains;
+	return fout;
+}

@@ -20,6 +20,10 @@ public:
 	void close() {
 		fclose(fp);
 	}
+	
+	bool is_open() {
+		return fp != NULL;
+	}
 };
 
 class binifstream : public binfstream {

@@ -9,6 +9,7 @@
 #include <cstddef>
 #include "utility.hpp"
 #include "exceptions.hpp"
+#include "binfstream.hpp"
 
 namespace sjtu {
 
@@ -662,6 +663,13 @@ public:
 			nd = endNode;
 		}
 		return const_iterator(nd);
+	}
+	
+	friend binifstream operator>>(binifstream &fin, map &map) {
+		
+	}
+	friend binofstream operator<<(binofstream &fout, const map &map) {
+		
 	}
 };
 

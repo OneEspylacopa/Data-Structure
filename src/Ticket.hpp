@@ -42,6 +42,27 @@ public:
 		price(price),
 		count(count)
 	{ }
+	
+	binifstream& operator>>(binifstream &fin) {
+		fin >> trainNumber;
+		fin >> start;
+		fin >> end;
+		fin >> date;
+		fin >> time;
+		fin >> type;
+		fin >> price;
+		fin >> count;
+	}
+	binofstream& operator<<(binofstream &fout) {
+		fout << trainNumber;
+		fout << start;
+		fout << end;
+		fout << date;
+		fout << time;
+		fout << type;
+		fout << price;
+		fout << count;
+	}
 };
 
 #endif
