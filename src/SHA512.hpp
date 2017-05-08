@@ -143,15 +143,13 @@ public:
             for (int i = 0; i < 15; i++) Ans[i] = '0';
             unsigned long long x = HashI[j];
             int k = 0;
-            //cout << x << endl;
             while (x > 0) {
-                int tmp = x % 16;
-                //cout << tmp << endl;
+                int tmp = x & 15;
                 if (tmp < 10)
                     Ans[15 - k] = '0' + tmp;
                 else
                     Ans[15 - k] = 'a' + tmp - 10;
-                x /= 16;
+                x >>= 4;
                 k ++;
             }
             Ans[16] = '\0';
