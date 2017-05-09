@@ -20,7 +20,7 @@ protected:
 	string password; // user's password 
 	Log log; // user's log
 	
-	vector<TicketInfo> tickets;
+	map<TicketInfo> tickets; // info -> count
 	
 public:
 	User() { }

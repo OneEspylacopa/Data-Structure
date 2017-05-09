@@ -34,6 +34,7 @@ bool GeneralUser::BookTicket(const TicketInfo &info) {
 	// return true if succeed, false if fail
 	bool success = sys->train.BookTicket(info);
 	if(success) {
+		tickets[info] += info.count;
 		log.AddBook(info);
 	}
 	return success;
@@ -43,6 +44,10 @@ bool GeneralUser::ReturnTicket(const TicketInfo &info) {
 	// return true if succeed, false if fail
 	bool success = sys->train.ReturnTicket(info);
 	if(success) {
+		tickets[info] -= info.count;
+		if(tickets[info] == 0) {
+			tickets.erase(tickets.find(info));
+		}
 		log.AddReturn(info);
 	}
 	return success;
