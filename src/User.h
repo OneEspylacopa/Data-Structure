@@ -20,6 +20,8 @@ protected:
 	string password; // user's password 
 	Log log; // user's log
 	
+	vector<TicketInfo> tickets;
+	
 public:
 	User() { }
 	User(TrainSystem *sys);

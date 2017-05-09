@@ -55,6 +55,10 @@ class Date{
 			}
 			else return day < date.day;
 		}
+		bool operator!=(const Date &date) const {
+			return year != date.year || month != date.month || day != date.day;
+		}
+		
 		friend binofstream& operator<<(binofstream &fout, const Date& date){   //???????const?... 
 			string str = date.GetDate();
 			fout << str;

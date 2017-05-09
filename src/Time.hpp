@@ -37,6 +37,17 @@ public:
 		return str;
 	}
 
+	bool operator<(const Time &obj) const {
+		if(hour != obj.hour) {
+			return hour < obj.hour;
+		} else {
+			return minute < obj.minute;
+		}
+	}
+	bool operator!=(const Time &obj) const {
+		return hour != obj.hour || minute != obj.minute;
+	}
+	
 	friend binofstream& operator<<(binofstream& fout, const Time& obj) {
 		string str = obj.GetTime();
 		fout << str;

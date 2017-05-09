@@ -23,8 +23,8 @@ Log User::GetLog() const {
 	return log;
 }
 
-GeneralUser::GeneralUser() : User(sys) {}
-GeneralUser::~GeneralUser() {}
+GeneralUser::GeneralUser() : User(sys) { }
+GeneralUser::~GeneralUser() { }
 
 vector<TicketInfo> GeneralUser::QueryTicket(const string &start, const string &end, const Date &date) const {
 	return sys->train.QueryTicket(start, end, date);

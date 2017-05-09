@@ -63,6 +63,24 @@ public:
 		fout << price;
 		fout << count;
 	}
+	
+	bool operator<(const TicketInfo &b) const {
+		if(trainNumber != b.trainNumber) {
+			return trainNumber < b.trainNumber;
+		} else if(start != b.start) {
+			return start < b.start;
+		} else if(end != b.end) {
+			return end < b.end;
+		} else if(date != b.date) {
+			return date < b.date;
+		} else if(time != b.time) {
+			return time < b.time;
+		} else if(type != b.type) {
+			return type < b.type;
+		} else {
+			return price < b.price;
+		}
+	}
 };
 
 #endif
