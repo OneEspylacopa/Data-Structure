@@ -41,6 +41,41 @@ public:
 		::operator delete(tem);
 	}
 	
+	void resize(int size){
+		if(size < currentLen){
+			for(int i = size;i < currentLen;i++){
+				T* p = data + i;
+				p -> ~T();
+			}
+			currentLen = size;
+		}
+		
+		else if(size > Maxsize){
+			T *tem = data;		
+			data = (T*)::operator new(size * sizeof(T));
+			for(int i = 0;i < currentLen;i++){
+				data[i] = tem[i];
+			}
+			for(int i = currentLen;i < size;i++){
+				new (data + i) T();
+			}
+			for(int i = Maxsize - 1;i >= 0;i--){
+				T* p = tem + i;
+				p -> ~T();	
+			}
+			::operator delete(tem);
+			Maxsize = size;
+		}
+		
+		else{
+			for(int i = currentLen;i < size;i++){
+				new (data + i) T();
+			}
+			currentLen = size;
+		}	
+	}
+	
+	
 	class const_iterator;
 	class iterator {
 		friend vector;
