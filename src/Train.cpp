@@ -1,6 +1,8 @@
 #include "TrainSystem.h"
+#include "fstream"
 
 ///////////////TrainNumber///////////////
+TrainNumber::TrainNumber() { }
 TrainNumber::TrainNumber(const string &number) : number(number) {
 	selling = false;
 	canceled = false;
@@ -61,6 +63,38 @@ bool TrainNumber::ReturnTicket(const TicketInfo &info) {
 		return false;
 	}
 }
+vector<TicketsInfo> TrainNumber::QueryTicket(const string &start, const string &end) const {
+	vector<TicketsInfo> res;
+	
+	for(int i = 0; i < (int) stations.size(); i++) {
+		if(stations[i].name == start) { // Ä£ºýËÑË÷ 
+			for(int j = i + 1; j < (int) stations.size(); j++) {
+				if(stations[j].name == end) {
+					TicketsInfo info;
+					info.trainNumber = number;
+					info.start = start;
+					info.end = end;
+					info.time = stations[i].arriveTime;
+					for(int l = 0; l < 12; l++) {
+						info.count[l] = stations[i].seatCount[l];
+						info.price[l] = 0;
+					}
+					for(int k = i; k < j; k++) {
+						for(int l = 0; l < 12; l++) {
+							const int &tmp = stations[k].seatCount[l];
+							if(tmp < info.count[l]) {
+								info.count[l] = tmp;
+							}
+							info.price[l] += stations[i].price[l];
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	return res;
+}
 bool TrainNumber::StartSelling() {
 	if(selling == true) {
 		return false;
@@ -79,6 +113,40 @@ bool TrainNumber::StopSelling() {
 }
 void TrainNumber::Cancel() {
 	canceled = true;
+}
+binifstream& TrainNumber::operator>>(binifstream &fin) {
+	vector<Station> &vec = stations;
+	
+	fin >> number;
+	fin >> selling;
+	fin >> canceled;
+	
+	size_t size;
+	fin >> size;
+	
+	vec.clear();
+	vec.resize(size);
+	
+	for(size_t i = 0; i < size; i++) {
+		fin >> vec[i];
+	}
+	
+	return fin;
+}
+binofstream& TrainNumber::operator<<(binofstream &fout) {
+	const vector<Station> &vec = stations;
+	
+	fout << number;
+	fout << selling;
+	fout << canceled;
+	
+	size_t size = vec.size();
+	fout << size;
+	for(size_t i = 0; i < size; i++) {
+		fout << vec[i];
+	}
+	
+	return fout;
 }
 ///////////////TrainDay///////////////
 bool TrainDay::BookTicket(const TicketInfo &info) {
@@ -104,35 +172,13 @@ vector<TrainNumber>::iterator TrainDay::GetNumber(const string &number) const {
 		return numberMap[number];
 	}
 }
-vector<TicketInfo> TrainDay::QueryTicket(const string &start, const string &end) const {
-	vector<TicketInfo> res;
+vector<TicketsInfo> TrainDay::QueryTicket(const string &start, const string &end) const {
+	vector<TicketsInfo> res;
 	for(int i = 0; i < (int) train.size(); i++) {
-		const vector<Station> &stations = train[i].stations;
-		
-		const Station *s = nullptr, *e = nullptr;
-		for(int j = 0; j < (int) stations.size(); j++) {
-			if(s == nullptr) {
-				if(stations[j].name == start) {
-					s = &stations[j];
-				}
-			} else {
-				if(stations[j].name == end) {
-					e = &stations[j];
-				}
-			}
-		}
-		
-		if(s != nullptr && e != nullptr) {
-			TicketInfo tmp;
-			tmp.trainNumber = train[i].GetNumber();
-			tmp.start = start;
-			tmp.end = end;
-			// tmp.date = 
-			tmp.time = s->arriveTime;
-			// tmp.type;
-			// tmp.price;
-			tmp.count = 1;
-			res.push_back(tmp);
+		vector<TicketsInfo> ret;
+		while(!ret.empty()) {
+			res.push_back(ret.back());
+			ret.pop_back();
 		}
 	}
 	return res;
@@ -223,7 +269,7 @@ bool Train::ReturnTicket(const TicketInfo &info) {
 		return trains[info.date].ReturnTicket(info);
 	}
 }
-vector<TicketInfo> Train::QueryTicket(const string &start, const string &end, const Date &date) const {
+vector<TicketsInfo> Train::QueryTicket(const Date &date, const string &start, const string &end) const {
 	return trains[date].QueryTicket(start, end);
 }
 
@@ -256,6 +302,12 @@ bool Train::CancelPlan(const Date &date, const string &number) {
 		return false;
 	} else {
 		return trains[date].CancelPlan(number);
+	}
+}
+void Train::Import(const string &path) {
+	ifstream fin(path.c_str());
+	if(!fin.is_open()) {
+		return;
 	}
 }
 binifstream& Train::operator>>(binifstream &fin) {

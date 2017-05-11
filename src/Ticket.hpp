@@ -83,4 +83,51 @@ public:
 	}
 };
 
+class TicketsInfo {
+public:
+	string trainNumber;
+	string start;
+	string end;
+	Date date;
+	Time time;
+	int price[SEAT_TYPE_NUM];
+	int count[SEAT_TYPE_NUM];
+	
+	TicketsInfo() { }
+	TicketsInfo(const string &trainNumber, const string &start, const string &end, const Date &date, const Time &time, const int _price[SEAT_TYPE_NUM], const int _count[SEAT_TYPE_NUM]) :
+		trainNumber(trainNumber),
+		start(start),
+		end(end),
+		date(date),
+		time(time) {
+		for(int i = 0; i < SEAT_TYPE_NUM; i++) {
+			price[i] = _price[i];
+			count[i] = _count[i];
+		}
+	}
+	
+	binifstream& operator>>(binifstream &fin) {
+		fin >> trainNumber;
+		fin >> start;
+		fin >> end;
+		fin >> date;
+		fin >> time;
+		for(int i = 0; i < SEAT_TYPE_NUM; i++) {
+			fin >> price[i];
+			fin >> count[i];
+		}
+	}
+	binofstream& operator<<(binofstream &fout) {
+		fout << trainNumber;
+		fout << start;
+		fout << end;
+		fout << date;
+		fout << time;
+		for(int i = 0; i < SEAT_TYPE_NUM; i++) {
+			fout << price[i];
+			fout << count[i];
+		}
+	}
+};
+
 #endif

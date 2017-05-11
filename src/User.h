@@ -20,7 +20,7 @@ protected:
 	string password; // user's password 
 	Log log; // user's log
 	
-	map<TicketInfo> tickets; // info -> count
+	map<TicketInfo, int> tickets; // info -> count
 	
 public:
 	User() { }
@@ -40,7 +40,6 @@ public:
 	void ModifyInfo(const string &_name, const string &_password);
 	
 	string GetName() const;
-	
 	string GetID() const;
 	string GetPassword() const;
 	Log GetLog() const;
@@ -51,7 +50,7 @@ public:
 	GeneralUser();
 	~GeneralUser();
 	
-	vector<TicketInfo> QueryTicket(const string &start, const string &end, const Date &date) const;
+	vector<TicketsInfo> QueryTicket(const string &start, const string &end, const Date &date) const;
 	
 	bool BookTicket(const TicketInfo &info);
 	bool ReturnTicket(const TicketInfo &info);

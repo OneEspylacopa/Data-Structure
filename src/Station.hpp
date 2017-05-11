@@ -16,6 +16,9 @@ public:
 	Time stopTime;
 	int mileage;
 	int seatCount[SEAT_TYPE_NUM];
+	int price[SEAT_TYPE_NUM];
+	
+	Station() { }
 	
 	Station(const string &name, const Time &arriveTime, const Time stopTime, const int &mileage, const int seatCount[SEAT_TYPE_NUM]) :
 		name(name), arriveTime(arriveTime), stopTime(stopTime), mileage(mileage) {
@@ -28,6 +31,7 @@ public:
 		fin >> name >> arriveTime >> stopTime >> mileage;
 		for(int i = 0; i < SEAT_TYPE_NUM; i++) {
 			fin >> seatCount[i];
+			fin >> price[i];
 		}
 		return fin;
 	}
@@ -35,6 +39,7 @@ public:
 		fout << name << arriveTime << stopTime << mileage;
 		for(int i = 0; i < SEAT_TYPE_NUM; i++) {
 			fout << seatCount[i];
+			fout << price[i];
 		}
 		return fout;
 	}

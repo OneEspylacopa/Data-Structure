@@ -24,52 +24,22 @@ public:
 	vector<Station> stations;
 	
 public:
+	TrainNumber();
 	TrainNumber(const string &number);
 	
 	string GetNumber() const;
 	
 	bool BookTicket(const TicketInfo &info);
 	bool ReturnTicket(const TicketInfo &info);
+	vector<TicketsInfo> QueryTicket(const string &start, const string &end) const;
 	
 	bool StartSelling();
 	bool StopSelling();
 	
 	void Cancel();
 	
-	binifstream& operator>>(binifstream &fin) {
-		vector<Station> &vec = stations;
-		
-		fin >> number;
-		fin >> selling;
-		fin >> canceled;
-		
-		size_t size;
-		fin >> size;
-		
-		vec.clear();
-		vec.resize(size);
-		
-		for(size_t i = 0; i < size; i++) {
-			fin >> vec[i];
-		}
-		
-		return fin;
-	}
-	binofstream& operator<<(binofstream &fout) {
-		const vector<Station> &vec = stations;
-		
-		fout << number;
-		fout << selling;
-		fout << canceled;
-		
-		size_t size = vec.size();
-		fout << size;
-		for(size_t i = 0; i < size; i++) {
-			fout << vec[i];
-		}
-		
-		return fout;
-	}
+	binifstream& operator>>(binifstream &fin);
+	binofstream& operator<<(binofstream &fout);
 };
 
 class TrainDay {
@@ -82,7 +52,7 @@ private:
 public:
 	bool BookTicket(const TicketInfo &info);
 	bool ReturnTicket(const TicketInfo &info);
-	vector<TicketInfo> QueryTicket(const string &start, const string &end) const;
+	vector<TicketsInfo> QueryTicket(const string &start, const string &end) const;
 	
 	bool StartSelling(const string &number);
 	bool StopSelling(const string &number);
@@ -98,7 +68,6 @@ class Train {
 private:
 	TrainSystem *sys;
 	
-public:
 	map<Date, TrainDay> trains;
 	
 public:
@@ -107,13 +76,15 @@ public:
 	
 	bool BookTicket(const TicketInfo info);
 	bool ReturnTicket(const TicketInfo &info);
-	vector<TicketInfo> QueryTicket(const string &start, const string &end, const Date &date) const;
+	vector<TicketsInfo> QueryTicket(const Date &date, const string &start, const string &end) const;
 	
 	bool StartSelling(const Date &date, const string &number);
 	bool StopSelling(const Date &date, const string &number);
 	bool AddPlan(const Date &date, const TrainNumber &trainNumber);
 	bool ModifyPlan(const Date &date, const TrainNumber &trainNumber);
 	bool CancelPlan(const Date &date, const string &number);
+	
+	void Import(const string &path);
 	
 	binifstream& operator>>(binifstream &fin);
 	binofstream& operator<<(binofstream &fout);
