@@ -305,7 +305,7 @@ bool Train::CancelPlan(const Date &date, const string &number) {
 	}
 }
 void Train::Import(const string &path) {
-	ifstream fin(path.c_str());
+	std::ifstream fin(path.c_str());
 	if(!fin.is_open()) {
 		return;
 	}

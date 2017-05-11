@@ -26,8 +26,8 @@ Log User::GetLog() const {
 GeneralUser::GeneralUser() : User(sys) { }
 GeneralUser::~GeneralUser() { }
 
-vector<TicketsInfo> GeneralUser::QueryTicket(const string &start, const string &end, const Date &date) const {
-	return sys->train.QueryTicket(start, end, date);
+vector<TicketsInfo> GeneralUser::QueryTicket(const Date &date, const string &start, const string &end) const {
+	return sys->train.QueryTicket(date, start, end);
 }
 
 bool GeneralUser::BookTicket(const TicketInfo &info) {

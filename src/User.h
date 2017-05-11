@@ -50,7 +50,7 @@ public:
 	GeneralUser();
 	~GeneralUser();
 	
-	vector<TicketsInfo> QueryTicket(const string &start, const string &end, const Date &date) const;
+	vector<TicketsInfo> QueryTicket(const Date &date, const string &start, const string &end) const;
 	
 	bool BookTicket(const TicketInfo &info);
 	bool ReturnTicket(const TicketInfo &info);
