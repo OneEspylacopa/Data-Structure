@@ -1,5 +1,6 @@
 #include "TrainSystem.h"
 #include "fstream"
+#include <iostream>
 
 ///////////////TrainNumber///////////////
 TrainNumber::TrainNumber() { }
@@ -308,6 +309,50 @@ void Train::Import(const string &path) {
 	std::ifstream fin(path.c_str());
 	if(!fin.is_open()) {
 		return;
+	}
+	
+	Date date;
+	
+	string number, str;
+	fin >> number;
+	string strType1, strType2, strType3;
+	SeatType type1, type2, type3;
+	
+	while(!fin.eof()) {
+		fin >> str;
+		std::cout << str << std::endl;
+		int cnt = 0;
+		for(int i = 0; i < str.size(); i++) {
+			if(str[i] == ',') {
+				cnt++;
+				continue;
+			}
+			if(cnt == 5) {
+				strType1 += str[i];
+			} else if(cnt == 6) {
+				strType2 += str[i];
+			} else {
+				strType3 += str[i];
+			}
+		}
+		std::cout << cnt << std::endl;
+		type1 = GetSeatType(strType1);
+		type2 = GetSeatType(strType2);
+		type3 = GetSeatType(strType3);
+		
+		//std::cout << strType1 << " " << strType2 << " " << strType3 << std::endl;
+		
+		for(;;) {
+			fin >> str;
+			if(str[0] < 'A' || str[0] > 'Z') {
+				break;
+			}
+			
+		}
+		number = str;
+		
+		//TrainNumber trainNumber(number);
+		//AddPlan(date, trainNumber);
 	}
 }
 binifstream& Train::operator>>(binifstream &fin) {

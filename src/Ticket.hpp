@@ -20,6 +20,39 @@ enum SeatType {
 	SpecialSeat = 11 //特等座 
 };
 
+static string GetSeatType(SeatType type) {
+	std::string result;
+	if (type == FirstClass) result += "一等座";
+	if (type == SecondClass) result += "二等座";
+	if (type == NoSeat) result += "无座";
+	if (type == BusinessSeat) result += "商务座";
+	if (type == HardSeat) result += "硬座";
+	if (type == SoftSeat) result += "软座";
+	if (type == HardSleeperUp) result += "硬卧上";
+	if (type == HardSleeperMiddle) result += "硬卧中";
+	if (type == HardSleeperDown) result += "硬卧下";
+	if (type == SoftSleeperDown) result += "软卧下";
+	if (type == AdvancedSoftSleeper) result += "高级软卧";
+	if (type == SpecialSeat) result += "特等座";
+	return result;
+}
+
+static SeatType GetSeatType(const string &type) {
+	if (type == "一等座") return FirstClass;
+	if (type == "二等座") return SecondClass;
+	if (type == "无座") return NoSeat;
+	if (type == "无座") return BusinessSeat;
+	if (type == "硬座") return HardSeat;
+	if (type == "软座") return SoftSeat;
+	if (type == "硬卧上") return HardSleeperUp;
+	if (type == "硬卧中") return HardSleeperMiddle;
+	if (type == "硬卧下") return HardSleeperDown;
+	if (type == "软卧下") return SoftSleeperDown;
+	if (type == "高级软卧") return AdvancedSoftSleeper;
+	if (type == "特等座") return SpecialSeat;
+	//throw(false);
+}
+
 class TicketInfo {
 public:
 	string trainNumber;

@@ -89,6 +89,8 @@ public:
 	
 	string SystemHistory() const;
 	
+	void Import(const string &path);
+	
 	binifstream& operator>>(binifstream &fin);
 	binofstream& operator<<(binofstream &fout);
 };

@@ -121,6 +121,16 @@ string AllUser::SystemHistory() const {
 	}
 	return result;
 }
+void AllUser::Import(const string &path) {
+	std::ifstream fin(path.c_str());
+	if(!fin.is_open()) {
+		return;
+	}
+	
+	while(!fin.eof()) {
+		
+	}
+}
 binifstream& AllUser::operator>>(binifstream &fin) {
 	fin >> map;
 	return fin;
