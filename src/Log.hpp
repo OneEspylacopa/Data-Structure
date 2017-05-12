@@ -58,7 +58,7 @@ public:
     friend binofstream& operator << (binofstream &fout, const Log &log) {
     	unsigned int n = log.logs.size();
     	fout << n << '\n';
-    	for (int i = 1; i <= n; ++i) {
+    	for (int i = 1; i <= (int) n; ++i) {
     		fout << log.logs[i] << '\n';
 		}
     	return fout;
@@ -66,7 +66,7 @@ public:
     friend binifstream& operator >> (binifstream &fin, Log &log) {
     	unsigned int n;
     	fin >> n;
-    	for (int i = 1; i <= n; ++i) {
+    	for (int i = 1; i <= (int) n; ++i) {
     		std::string s;
     		fin >> s;
     		log.logs.push_back(s);

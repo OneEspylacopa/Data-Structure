@@ -26,14 +26,15 @@ Log User::GetLog() const {
 GeneralUser::GeneralUser() : User(sys) { }
 GeneralUser::~GeneralUser() { }
 
-vector<TicketInfo> GeneralUser::QueryTicket(const string &start, const string &end, const Date &date) const {
-	return sys->train.QueryTicket(start, end, date);
+vector<TicketsInfo> GeneralUser::QueryTicket(const Date &date, const string &start, const string &end) const {
+	return sys->train.QueryTicket(date, start, end);
 }
 
 bool GeneralUser::BookTicket(const TicketInfo &info) {
 	// return true if succeed, false if fail
 	bool success = sys->train.BookTicket(info);
 	if(success) {
+		tickets[info] += info.count;
 		log.AddBook(info);
 	}
 	return success;
@@ -43,6 +44,10 @@ bool GeneralUser::ReturnTicket(const TicketInfo &info) {
 	// return true if succeed, false if fail
 	bool success = sys->train.ReturnTicket(info);
 	if(success) {
+		tickets[info] -= info.count;
+		if(tickets[info] == 0) {
+			tickets.erase(tickets.find(info));
+		}
 		log.AddReturn(info);
 	}
 	return success;
@@ -115,6 +120,16 @@ string AllUser::SystemHistory() const {
 		result.append(str);
 	}
 	return result;
+}
+void AllUser::Import(const string &path) {
+	std::ifstream fin(path.c_str());
+	if(!fin.is_open()) {
+		return;
+	}
+	
+	while(!fin.eof()) {
+		
+	}
 }
 binifstream& AllUser::operator>>(binifstream &fin) {
 	fin >> map;

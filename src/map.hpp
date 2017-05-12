@@ -666,10 +666,10 @@ public:
 	}
 	
 	friend binifstream operator>>(binifstream &fin, map &map) {
-		
+		return fin;
 	}
 	friend binofstream operator<<(binofstream &fout, const map &map) {
-		
+		return fout;
 	}
 };
 
