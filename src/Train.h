@@ -17,32 +17,57 @@ using sjtu::map;
 class TrainNumber {
 private:
 	string number;
+	bool selling;
+	bool canceled;
 	
 public:
 	vector<Station> stations;
 	
 public:
+	TrainNumber();
 	TrainNumber(const string &number);
 	
 	string GetNumber() const;
 	
 	bool BookTicket(const TicketInfo &info);
 	bool ReturnTicket(const TicketInfo &info);
+	vector<TicketsInfo> QueryTicket(const string &start, const string &end) const;
+	
+	bool StartSelling();
+	bool StopSelling();
+	
+	void Cancel();
+	
+	binifstream& operator>>(binifstream &fin);
+	binofstream& operator<<(binofstream &fout);
 };
 
 class TrainDay {
-public:
+private:
+	map<string, vector<TrainNumber>::iterator> numberMap;
 	vector<TrainNumber> train;
 	
+	vector<TrainNumber>::iterator GetNumber(const string &number) const;
+	
+public:
 	bool BookTicket(const TicketInfo &info);
 	bool ReturnTicket(const TicketInfo &info);
+	vector<TicketsInfo> QueryTicket(const string &start, const string &end) const;
+	
+	bool StartSelling(const string &number);
+	bool StopSelling(const string &number);
+	bool AddPlan(const TrainNumber &trainNumber);
+	bool ModifyPlan(const TrainNumber &trainNumber);
+	bool CancelPlan(const string &number);
+	
+	binifstream& operator>>(binifstream &fin);
+	binofstream& operator<<(binofstream &fout);
 };
 
 class Train {
 private:
 	TrainSystem *sys;
 	
-public:
 	map<Date, TrainDay> trains;
 	
 public:
@@ -51,7 +76,18 @@ public:
 	
 	bool BookTicket(const TicketInfo info);
 	bool ReturnTicket(const TicketInfo &info);
-	TicketInfo QueryTicket(const string &start, const string &end, const Date &date) const;
+	vector<TicketsInfo> QueryTicket(const Date &date, const string &start, const string &end) const;
+	
+	bool StartSelling(const Date &date, const string &number);
+	bool StopSelling(const Date &date, const string &number);
+	bool AddPlan(const Date &date, const TrainNumber &trainNumber);
+	bool ModifyPlan(const Date &date, const TrainNumber &trainNumber);
+	bool CancelPlan(const Date &date, const string &number);
+	
+	void Import(const string &path);
+	
+	binifstream& operator>>(binifstream &fin);
+	binofstream& operator<<(binofstream &fout);
 };
 
 #endif

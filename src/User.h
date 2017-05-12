@@ -20,6 +20,8 @@ protected:
 	string password; // user's password 
 	Log log; // user's log
 	
+	map<TicketInfo, int> tickets; // info -> count
+	
 public:
 	User() { }
 	User(TrainSystem *sys);
@@ -38,7 +40,6 @@ public:
 	void ModifyInfo(const string &_name, const string &_password);
 	
 	string GetName() const;
-	
 	string GetID() const;
 	string GetPassword() const;
 	Log GetLog() const;
@@ -49,7 +50,7 @@ public:
 	GeneralUser();
 	~GeneralUser();
 	
-	TicketInfo QueryTicket(const string &start, const string &end, const Date &date) const;
+	vector<TicketsInfo> QueryTicket(const Date &date, const string &start, const string &end) const;
 	
 	bool BookTicket(const TicketInfo &info);
 	bool ReturnTicket(const TicketInfo &info);
@@ -60,11 +61,11 @@ public:
 	Administrator();
 	~Administrator();
 	
-	void AddPlan();
-	bool ModifyPlan();
-	bool CancelPlan();
-	bool BeginToSell();
-	bool StopToSell();
+	bool AddPlan(const Date &date, const TrainNumber &trainNumber);
+	bool ModifyPlan(const Date &date, const TrainNumber &trainNumber);
+	bool CancelPlan(const Date &date, const string &number);
+	bool StartSelling(const Date &date, const string &number);
+	bool StopSelling(const Date &date, const string &number);
 	
 	const Log QueryUser(const string &userID) const;
 	
@@ -83,11 +84,15 @@ public:
 	~AllUser();
 	
 	User* GetUser(const string &userID);
+	User* Login(const string &userID, const string &password);
 	User* Register(const string &name, const string &userID, const string &password);
 	
-	static string SystemHistory() {
-		//TODO
-	}
+	string SystemHistory() const;
+	
+	void Import(const string &path);
+	
+	binifstream& operator>>(binifstream &fin);
+	binofstream& operator<<(binofstream &fout);
 };
 
 #endif

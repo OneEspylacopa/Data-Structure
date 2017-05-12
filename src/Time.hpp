@@ -1,11 +1,3 @@
-/*Time.hpp
-构造：Time(9,29),      注意这里若存在某个量为个位数则不需要补零
-Time("09:29");   注意这里必须是标准的时间格式字符串（个位数补零）
-输出：fout << obj;
-输入：fin >> obj;      均为标准的时间格式
-注意文件的输入输出时，ofstream 和 ifstream 不能同时关联同一个文件，否则使用本类型会出现乱码
-*/
-
 #ifndef TIME_HPP
 #define TIME_HPP
 
@@ -22,7 +14,6 @@ public:
 		hour = 0;
 		minute = 0;
 	};
-	//Time(int _hour = 0, int _minute = 0):hour(_hour), minute(_minute){}
 
 	Time(const string& s) {
 		hour = int(s[0] - '0') * 10 + int(s[1] - '0');
@@ -46,6 +37,17 @@ public:
 		return str;
 	}
 
+	bool operator<(const Time &obj) const {
+		if(hour != obj.hour) {
+			return hour < obj.hour;
+		} else {
+			return minute < obj.minute;
+		}
+	}
+	bool operator!=(const Time &obj) const {
+		return hour != obj.hour || minute != obj.minute;
+	}
+	
 	friend binofstream& operator<<(binofstream& fout, const Time& obj) {
 		string str = obj.GetTime();
 		fout << str;
