@@ -32,7 +32,7 @@ public:
 		Maxsize *= 2;
 		data = (T*)::operator new(Maxsize*sizeof(T));
 		for(int i = 0;i < currentLen;i++){
-			data[i] = tem[i];
+			new (data + i) T(tem[i]);
 		}
 		for(int i = Maxsize/2 - 1;i >= 0;i--){
 			T* p = tem + i;
@@ -54,12 +54,12 @@ public:
 			T *tem = data;		
 			data = (T*)::operator new(size * sizeof(T));
 			for(int i = 0;i < currentLen;i++){
-				data[i] = tem[i];
+				new (data + i) T(tem[i]);
 			}
 			for(int i = currentLen;i < size;i++){
 				new (data + i) T();
 			}
-			for(int i = Maxsize - 1;i >= 0;i--){
+			for(int i = currentLen - 1;i >= 0;i--){
 				T* p = tem + i;
 				p -> ~T();	
 			}
@@ -202,7 +202,7 @@ class const_iterator {
 		for(int i = 0;i < currentLen;i++)data[i] = other[i];
 	}
 	~vector() {
-		for(int i = Maxsize - 1;i >= 0;i--){
+		for(int i = currentLen - 1;i >= 0;i--){
 			T* p = data + i;
 			p -> ~T();	
 		} 
@@ -261,7 +261,7 @@ class const_iterator {
 		return Maxsize;
 	}
 	void clear() {           
-		for(int i = Maxsize - 1;i >= 0;i--){
+		for(int i = currentLen - 1;i >= 0;i--){
 			T* p = data + i;
 			p -> ~T();	
 		} 
@@ -271,7 +271,8 @@ class const_iterator {
 	iterator insert(iterator pos, const T &value) {
 		if(currentLen == Maxsize)doublespace();
 		int ind = pos - begin();
-		for(int i = currentLen;i > ind;i--)data[i] = data[i - 1]; 
+		new (data + currentLen) T(data[currentLen - 1]);
+		for(int i = currentLen - 1;i > ind;i--)data[i] = data[i - 1]; 
 		data[ind] = value;
 		currentLen++;
 		return iterator(this,ind);
@@ -288,11 +289,15 @@ class const_iterator {
 	iterator erase(iterator pos) {
 		if(pos - end() == 1){
 			currentLen--;
+			T*p = data + currentLen;
+			p-> ~T();
 			return end();
 		}
 		else{
 			for(int i = pos - begin();i<currentLen - 1;i++)data[i] = data[i + 1];
 			currentLen--;
+			T*p = data + currentLen;
+			p-> ~T();
 			return pos;
 		}
 	}
@@ -300,6 +305,8 @@ class const_iterator {
 		if(ind >= currentLen)throw index_out_of_bound();
 		for(int i = ind;i<currentLen - 1;i++)data[i] = data[i + 1];
 			currentLen--;
+			T*p = data + currentLen;
+			p-> ~T();
 		return iterator(this,ind);
 	}
 	void push_back(const T &value) {
@@ -309,6 +316,8 @@ class const_iterator {
 	void pop_back() {
 		if(size() == 0)throw container_is_empty();
 		currentLen--;
+		T*p = data + currentLen;
+		p-> ~T();
 	}
 };
 
