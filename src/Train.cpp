@@ -1,16 +1,24 @@
 #include "TrainSystem.h"
 #include "fstream"
 #include <iostream>
+#include <bits/stdc++.h>
 
 ///////////////TrainNumber///////////////
 TrainNumber::TrainNumber() { }
+TrainNumber::~TrainNumber() { }
 TrainNumber::TrainNumber(const string &number) : number(number) {
 	selling = false;
 	canceled = false;
 }
 string TrainNumber::GetNumber() const {
 	return number;
-}	
+}
+vector<Station> TrainNumber::GetStations() const {
+	return stations;
+}
+void TrainNumber::AddStation(const Station &station) {
+	stations.push_back(station);
+}
 bool TrainNumber::BookTicket(const TicketInfo &info) {
 	vector<Station>::iterator it_start = stations.end(), it_end = stations.end();
 	
@@ -60,6 +68,7 @@ bool TrainNumber::ReturnTicket(const TicketInfo &info) {
 		for(vector<Station>::iterator it = it_start; it != it_end; it++) {
 			it->seatCount[(int) info.type] += info.count;
 		}
+		return true;
 	} else {
 		return false;
 	}
@@ -204,8 +213,8 @@ bool TrainDay::AddPlan(const TrainNumber &trainNumber) {
 	if(numberMap.count(number)) {
 		return false;
 	} else {
-		train.push_back(trainNumber);
-		numberMap[number] = --train.end();
+		//train.push_back(trainNumber);
+		//numberMap[number] = --train.end();
 		return true;
 	}
 }
@@ -314,15 +323,20 @@ void Train::Import(const string &path) {
 	Date date;
 	
 	string number, str;
-	fin >> number;
-	string strType1, strType2, strType3;
-	SeatType type1, type2, type3;
+	fin >> str;
 	
 	while(!fin.eof()) {
+		string strType1, strType2, strType3;
+		SeatType type1, type2, type3;
+		
+		number = str;
+		TrainNumber trainNumber(number);
+		
 		fin >> str;
-		std::cout << str << std::endl;
+		std::cout << number << std::endl;
+		
 		int cnt = 0;
-		for(int i = 0; i < str.size(); i++) {
+		for(int i = 0; i < (int) str.size(); i++) {
 			if(str[i] == ',') {
 				cnt++;
 				continue;
@@ -331,28 +345,76 @@ void Train::Import(const string &path) {
 				strType1 += str[i];
 			} else if(cnt == 6) {
 				strType2 += str[i];
-			} else {
+			} else if(cnt == 7) {
 				strType3 += str[i];
 			}
 		}
-		std::cout << cnt << std::endl;
 		type1 = GetSeatType(strType1);
 		type2 = GetSeatType(strType2);
 		type3 = GetSeatType(strType3);
 		
-		//std::cout << strType1 << " " << strType2 << " " << strType3 << std::endl;
-		
+		string date;
 		for(;;) {
+			Station station;
+			string arriveTime, stopTime;
+			string price1, price2, price3;
+			
 			fin >> str;
-			if(str[0] < 'A' || str[0] > 'Z') {
+			if(fin.eof()) break;
+			
+			if(str[0] >= 'A' && str[0] <= 'Z') {
 				break;
 			}
 			
+			//std::cout << str << std::endl;
+			
+			int cnt = 0;
+			for(int i = 0; i < (int) str.size(); i++) {
+				if(str[i] == ',') {
+					cnt++;
+					continue;
+				}
+				if(cnt == 0) {
+					station.name += str[i];
+				} else if(cnt == 1) {
+					date += str[i];
+				} else if(cnt == 2) {
+					arriveTime += str[i];
+				} else if(cnt == 3) {
+					stopTime += str[i];
+				} else if(cnt == 4) {
+					if(str[i] >= '0' && str[i]<= '9') {
+						station.mileage = station.mileage * 10 + str[i] - '0';
+					}
+				} else if(cnt == 5) {
+					if(str[i] >= '0' && str[i] <= '9' || str[i] == '.') {
+						price1 += str[i];
+					}
+				} else if(cnt == 6) {
+					if(str[i] >= '0' && str[i] <= '9' || str[i] == '.') {
+						price2 += str[i];
+					}
+				} else if(cnt == 7) {
+					if(str[i] >= '0' && str[i] <= '9' || str[i] == '.') {
+						price3 += str[i];
+					}
+				}
+			}
+			if(arriveTime != "ÆðµãÕ¾") {
+				station.arriveTime = Time(arriveTime.c_str());
+			}
+			if(stopTime != "ÖÕµ½Õ¾") {
+				station.stopTime = Time(stopTime.c_str());
+			}
+			for(int i = 0; i < SEAT_TYPE_NUM; i++) {
+				station.seatCount[i] = 2000;
+			}
+			station.price[(int) type1] = atof(price1.c_str());
+			station.price[(int) type2] = atof(price2.c_str());
+			station.price[(int) type3] = atof(price3.c_str());
 		}
-		number = str;
 		
-		//TrainNumber trainNumber(number);
-		//AddPlan(date, trainNumber);
+		AddPlan(date, trainNumber);
 	}
 }
 binifstream& Train::operator>>(binifstream &fin) {

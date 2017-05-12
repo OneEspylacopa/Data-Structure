@@ -20,14 +20,16 @@ private:
 	bool selling;
 	bool canceled;
 	
-public:
 	vector<Station> stations;
 	
 public:
 	TrainNumber();
+	~TrainNumber();
 	TrainNumber(const string &number);
 	
 	string GetNumber() const;
+	vector<Station> GetStations() const;
+	void AddStation(const Station &station);
 	
 	bool BookTicket(const TicketInfo &info);
 	bool ReturnTicket(const TicketInfo &info);

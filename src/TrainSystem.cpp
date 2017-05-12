@@ -20,13 +20,17 @@ TrainSystem::TrainSystem() : train(this), user(this) {
 TrainSystem::~TrainSystem() {
 	binofstream ofTrainData;
 	ofTrainData.open(pathTrainData.c_str());
-	ofTrainData << train;
-	ofTrainData.close();
+	if(ofTrainData.is_open()) {
+		ofTrainData << train;
+		ofTrainData.close();	
+	}
 	
 	binofstream ofUserData;
 	ofUserData.open(pathUserData.c_str());
-	ofUserData << user;
-	ofUserData.close();
+	if(ofUserData.is_open()) {
+		ofUserData << user;
+		ofUserData.close();	
+	}
 }
 
 void TrainSystem::SetSystemHistory(const string &str) {

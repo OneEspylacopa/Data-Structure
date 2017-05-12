@@ -41,7 +41,7 @@ static SeatType GetSeatType(const string &type) {
 	if (type == "一等座") return FirstClass;
 	if (type == "二等座") return SecondClass;
 	if (type == "无座") return NoSeat;
-	if (type == "无座") return BusinessSeat;
+	if (type == "商务座") return BusinessSeat;
 	if (type == "硬座") return HardSeat;
 	if (type == "软座") return SoftSeat;
 	if (type == "硬卧上") return HardSleeperUp;
@@ -51,6 +51,7 @@ static SeatType GetSeatType(const string &type) {
 	if (type == "高级软卧") return AdvancedSoftSleeper;
 	if (type == "特等座") return SpecialSeat;
 	//throw(false);
+	return FirstClass;
 }
 
 class TicketInfo {
@@ -85,6 +86,7 @@ public:
 		fin >> type;
 		fin >> price;
 		fin >> count;
+		return fin;
 	}
 	binofstream& operator<<(binofstream &fout) {
 		fout << trainNumber;
@@ -95,6 +97,7 @@ public:
 		fout << type;
 		fout << price;
 		fout << count;
+		return fout;
 	}
 	
 	bool operator<(const TicketInfo &b) const {
@@ -149,6 +152,7 @@ public:
 			fin >> price[i];
 			fin >> count[i];
 		}
+		return fin;
 	}
 	binofstream& operator<<(binofstream &fout) {
 		fout << trainNumber;
@@ -160,6 +164,7 @@ public:
 			fout << price[i];
 			fout << count[i];
 		}
+		return fout;
 	}
 };
 
