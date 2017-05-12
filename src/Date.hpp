@@ -33,6 +33,7 @@ class Date{
 			char str[11];
 			int y = year, m = month , d = day;
 			for(int i = 3;i >= 0;i--,y/=10){
+			//	std::cout<<y;
 				str[i] = y % 10 + '0';
 			}
 			for(int i = 6;i >= 5;i--,m/=10){
@@ -43,8 +44,8 @@ class Date{
 			}
 			str[4] = str[7]  = '-';
 			str[10] = '\0';
-			string ans = str;
-			return ans;	
+//			string ans = str;
+			return str;	
 		}
 		bool operator<(const Date &date) const {          //?? ??? 
 			if(year != date.year){
