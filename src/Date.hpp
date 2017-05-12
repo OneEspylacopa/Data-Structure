@@ -16,6 +16,7 @@ class Date{
 			day = 0;
 		}
 		Date(const string& str) {
+			day = month = year = 0; 
 			for(int i = 0;i < 4;i++){
 				year = year * 10 + str[i] - '0';
 			}
