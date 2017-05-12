@@ -79,16 +79,35 @@ public:
 		return *this;
 	}
 	
-	binofstream& operator<<(string s) {
+	binofstream& operator<<(const string &s) {
 		int len = s.size();
 		fwrite(&len, sizeof(int), 1, fp);
 		fwrite(s.c_str(), sizeof(char), sizeof(char) * len, fp);
 		return *this;
 	}
 	
-	template<class T>
-	binofstream& operator<<(T x) {
-		fwrite(&x, sizeof(T), 1, fp);
+	binofstream& operator<<(const bool &x) {
+		fwrite(&x, sizeof(bool), 1, fp);
+		return *this;
+	}
+	
+	binofstream& operator<<(const int &x) {
+		fwrite(&x, sizeof(int), 1, fp);
+		return *this;
+	}
+	
+	binofstream& operator<<(const unsigned int &x) {
+		fwrite(&x, sizeof(unsigned int), 1, fp);
+		return *this;
+	}
+	
+	binofstream& operator<<(const size_t &x) {
+		fwrite(&x, sizeof(size_t), 1, fp);
+		return *this;
+	}
+	
+	binofstream& operator<<(const double &x) {
+		fwrite(&x, sizeof(double), 1, fp);
 		return *this;
 	}
 };

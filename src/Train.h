@@ -40,8 +40,40 @@ public:
 	
 	void Cancel();
 	
-	binifstream& operator>>(binifstream &fin);
-	binofstream& operator<<(binofstream &fout);
+	friend binifstream& operator>>(binifstream &fin, TrainNumber &trainNumber) {
+		vector<Station> &vec = trainNumber.stations;
+		
+		fin >> trainNumber.number;
+		fin >> trainNumber.selling;
+		fin >> trainNumber.canceled;
+		
+		size_t size;
+		fin >> size;
+		
+		vec.clear();
+		vec.resize(size);
+		
+		for(size_t i = 0; i < size; i++) {
+			fin >> vec[i];
+		}
+		
+		return fin;
+	}
+	friend binofstream& operator<<(binofstream &fout, const TrainNumber &trainNumber) {
+		const vector<Station> &vec = trainNumber.stations;
+		
+		fout << trainNumber.number;
+		fout << trainNumber.selling;
+		fout << trainNumber.canceled;
+		
+		size_t size = vec.size();
+		fout << size;
+		for(size_t i = 0; i < size; i++) {
+			fout << vec[i];
+		}
+		
+		return fout;
+	}
 };
 
 class TrainDay {
@@ -62,8 +94,35 @@ public:
 	bool ModifyPlan(const TrainNumber &trainNumber);
 	bool CancelPlan(const string &number);
 	
-	binifstream& operator>>(binifstream &fin);
-	binofstream& operator<<(binofstream &fout);
+	friend binifstream& operator>>(binifstream &fin, TrainDay &trainDay) {
+		vector<TrainNumber> &train = trainDay.train;
+		
+		size_t size;
+		fin >> size;
+		
+		train.clear();
+		train.resize(size);
+		for(size_t i = 0; i < size; i++) {
+			fin >> train[i];
+		}
+		
+		trainDay.numberMap.clear();
+		for(vector<TrainNumber>::iterator it = train.begin(); it != train.end(); it++) {
+			trainDay.numberMap[it->GetNumber()] = it;
+		}
+		return fin;
+	}
+	friend binofstream& operator<<(binofstream &fout, const TrainDay &trainDay) {
+		const vector<TrainNumber> &train = trainDay.train;
+		
+		size_t size = train.size();
+		fout << size;
+		
+		for(size_t i = 0; i < size; i++) {
+			fout << train[i];
+		}
+		return fout;
+	}
 };
 
 class Train {
@@ -88,8 +147,14 @@ public:
 	
 	void Import(const string &path);
 	
-	binifstream& operator>>(binifstream &fin);
-	binofstream& operator<<(binofstream &fout);
+	friend binifstream& operator>>(binifstream &fin, Train &train) {
+		fin >> train.trains;
+		return fin;
+	}
+	friend binofstream& operator<<(binofstream &fout, const Train &train) {
+		fout << train.trains;
+		return fout;
+	}
 };
 
 #endif

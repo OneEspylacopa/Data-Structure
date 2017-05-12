@@ -29,7 +29,14 @@ GeneralUser::~GeneralUser() { }
 vector<TicketsInfo> GeneralUser::QueryTicket(const Date &date, const string &start, const string &end) const {
 	return sys->train.QueryTicket(date, start, end);
 }
-
+vector<TicketInfo> GeneralUser::GetOrders() const {
+	vector<TicketInfo> result;
+	for(map<TicketInfo, int>::const_iterator it = tickets.cbegin(); it != tickets.cend(); it++) {
+		result.push_back(it->first);
+		result[(int) result.size() - 1].count = it->second;
+	}
+	return result;
+}
 bool GeneralUser::BookTicket(const TicketInfo &info) {
 	// return true if succeed, false if fail
 	bool success = sys->train.BookTicket(info);
@@ -130,12 +137,4 @@ void AllUser::Import(const string &path) {
 	while(!fin.eof()) {
 		
 	}
-}
-binifstream& AllUser::operator>>(binifstream &fin) {
-	fin >> map;
-	return fin;
-}
-binofstream& AllUser::operator<<(binofstream &fout) {
-	fout << map;
-	return fout;
 }

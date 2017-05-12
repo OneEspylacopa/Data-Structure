@@ -36,19 +36,19 @@ public:
 		}
 	}
 
-	binifstream operator>>(binifstream &fin) {
-		fin >> name >> arriveTime >> stopTime >> mileage;
+	friend binifstream operator>>(binifstream &fin, Station &station) {
+		fin >> station.name >> station.arriveTime >> station.stopTime >> station.mileage;
 		for(int i = 0; i < SEAT_TYPE_NUM; i++) {
-			fin >> seatCount[i];
-			fin >> price[i];
+			fin >> station.seatCount[i];
+			fin >> station.price[i];
 		}
 		return fin;
 	}
-	binofstream operator<<(binofstream &fout) {
-		fout << name << arriveTime << stopTime << mileage;
+	friend binofstream operator<<(binofstream &fout, const Station &station) {
+		fout << station.name << station.arriveTime << station.stopTime << station.mileage;
 		for(int i = 0; i < SEAT_TYPE_NUM; i++) {
-			fout << seatCount[i];
-			fout << price[i];
+			fout << station.seatCount[i];
+			fout << station.price[i];
 		}
 		return fout;
 	}

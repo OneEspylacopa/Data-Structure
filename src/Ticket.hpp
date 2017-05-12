@@ -77,26 +77,26 @@ public:
 		count(count)
 	{ }
 	
-	binifstream& operator>>(binifstream &fin) {
-		fin >> trainNumber;
-		fin >> start;
-		fin >> end;
-		fin >> date;
-		fin >> time;
-		fin >> type;
-		fin >> price;
-		fin >> count;
+	friend binifstream& operator>>(binifstream &fin, TicketInfo &info) {
+		fin >> info.trainNumber;
+		fin >> info.start;
+		fin >> info.end;
+		fin >> info.date;
+		fin >> info.time;
+		fin >> info.type;
+		fin >> info.price;
+		fin >> info.count;
 		return fin;
 	}
-	binofstream& operator<<(binofstream &fout) {
-		fout << trainNumber;
-		fout << start;
-		fout << end;
-		fout << date;
-		fout << time;
-		fout << type;
-		fout << price;
-		fout << count;
+	friend binofstream& operator<<(binofstream &fout, const TicketInfo &info) {
+		fout << info.trainNumber;
+		fout << info.start;
+		fout << info.end;
+		fout << info.date;
+		fout << info.time;
+		fout << info.type;
+		fout << info.price;
+		fout << info.count;
 		return fout;
 	}
 	
@@ -142,27 +142,27 @@ public:
 		}
 	}
 	
-	binifstream& operator>>(binifstream &fin) {
-		fin >> trainNumber;
-		fin >> start;
-		fin >> end;
-		fin >> date;
-		fin >> time;
+	friend binifstream& operator>>(binifstream &fin, TicketsInfo &info) {
+		fin >> info.trainNumber;
+		fin >> info.start;
+		fin >> info.end;
+		fin >> info.date;
+		fin >> info.time;
 		for(int i = 0; i < SEAT_TYPE_NUM; i++) {
-			fin >> price[i];
-			fin >> count[i];
+			fin >> info.price[i];
+			fin >> info.count[i];
 		}
 		return fin;
 	}
-	binofstream& operator<<(binofstream &fout) {
-		fout << trainNumber;
-		fout << start;
-		fout << end;
-		fout << date;
-		fout << time;
+	friend binofstream& operator<<(binofstream &fout, const TicketsInfo &info) {
+		fout << info.trainNumber;
+		fout << info.start;
+		fout << info.end;
+		fout << info.date;
+		fout << info.time;
 		for(int i = 0; i < SEAT_TYPE_NUM; i++) {
-			fout << price[i];
-			fout << count[i];
+			fout << info.price[i];
+			fout << info.count[i];
 		}
 		return fout;
 	}
