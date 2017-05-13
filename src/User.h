@@ -11,7 +11,6 @@
 
 using std::string;
 using sjtu::pair;
-using sjtu::make_pair;
 
 class User {
 private:

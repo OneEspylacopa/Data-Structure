@@ -1,5 +1,7 @@
 #include "TrainSystem.h"
 
+using sjtu::pair;
+
 User::User(TrainSystem *sys) : sys(sys) { }
 User::User(TrainSystem *sys, const string &name, const string &userID, const string &password, const bool &isAdmin) : sys(sys), name(name), userID(userID), password(password), isAdmin(isAdmin) { }
 User::~User() { }
@@ -118,29 +120,29 @@ User* AllUser::GetUser(const string &userID) {
 }
 pair<User*, string> AllUser::Login(const string &userID, const string &password) {
 	if(!map.count(userID)) {
-		return make_pair(nullptr, "该用户不存在");
+		return sjtu::make_pair((User*) nullptr, string("该用户不存在"));
 	} else {
 		if(map[userID].GetPassword() != SHA512::GetHash(password)) {
-			return make_pair(nullptr, "密码错误");
+			return sjtu::make_pair((User*) nullptr, string("密码错误"));
 		} else {
-			return make_pair(&map[userID], "");
+			return sjtu::make_pair(&map[userID], string());
 		}
 	}
 }
 pair<User*, string> AllUser::Register(const string &name, const string &userID, const string &password, const bool &isAdmin) {
 	if(name.size() < 5 || name.size() > 16) {
-		return make_pair(nullptr, "用户名长度不正确");
+		return sjtu::make_pair((User*) nullptr, string("用户名长度不正确"));
 	}
 	if(userID.size() != 9) {
-		return make_pair(nullptr, "ID格式不正确");
+		return sjtu::make_pair((User*) nullptr, string("ID格式不正确"));
 	}
 	if(password.size() < 6 || password.size() > 16) {
-		return make_pair(nullptr, "密码长度不正确");
+		return sjtu::make_pair((User*) nullptr, string("密码长度不正确"));
 	}
 	if(map.count(userID)) {
-		return make_pair(nullptr, "该ID已占用");
+		return sjtu::make_pair((User*) nullptr, string("该ID已占用"));
 	} else {
-		return make_pair(&(map[userID] = User(sys, name, userID, SHA512::GetHash(password), isAdmin)), "");
+		return sjtu::make_pair(&(map[userID] = User(sys, name, userID, SHA512::GetHash(password), isAdmin)), string());
 	}
 }
 string AllUser::SystemHistory() const {
