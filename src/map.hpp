@@ -10,7 +10,6 @@
 #include "utility.hpp"
 #include "exceptions.hpp"
 #include "binfstream.hpp"
-#include "binfstream.hpp"
 
 namespace sjtu {
 
