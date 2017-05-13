@@ -136,6 +136,9 @@ pair<User*, string> AllUser::Register(const string &name, const string &userID, 
 	if(userID.size() != 9) {
 		return sjtu::make_pair((User*) nullptr, string("ID格式不正确"));
 	}
+	if(userID == "000000000") {
+		return sjtu::make_pair((User*) nullptr, string("该ID无效"));
+	}
 	if(password.size() < 6 || password.size() > 16) {
 		return sjtu::make_pair((User*) nullptr, string("密码长度不正确"));
 	}
