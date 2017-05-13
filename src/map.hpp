@@ -10,6 +10,7 @@
 #include "utility.hpp"
 #include "exceptions.hpp"
 #include "binfstream.hpp"
+#include "binfstream.hpp"
 
 namespace sjtu {
 
@@ -738,7 +739,7 @@ public:
 		map.root->init(null);
 		return fin;
 	}
-	friend binofstream operator<<(binofstream &fout, map &map) {
+	friend binofstream operator<<(binofstream &fout, const map &map) {
 		map.root->write(fout);
 		return fout;
 	}

@@ -2,7 +2,10 @@
 #include "fstream"
 
 ///////////////TrainNumber///////////////
-TrainNumber::TrainNumber() { }
+TrainNumber::TrainNumber() {
+	selling = false;
+	canceled = false;
+}
 TrainNumber::~TrainNumber() { }
 TrainNumber::TrainNumber(const string &number) : number(number) {
 	selling = false;

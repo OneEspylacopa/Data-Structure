@@ -49,14 +49,11 @@ public:
 	}
 	
 	friend binofstream& operator<<(binofstream& fout, const Time& obj) {
-		string str = obj.GetTime();
-		fout << str;
+		fout << obj.hour << obj.minute;
 		return fout;
 	}
 	friend binifstream& operator >> (binifstream& fin, Time& obj) {
-		string str;
-		fin >> str;
-		obj = Time(str);
+		fin >> obj.hour >> obj.minute;
 		return fin;
 	}
 };

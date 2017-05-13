@@ -45,7 +45,7 @@ public:
 	binifstream& operator>>(string &s) {
 		int len;
 		fread(&len, sizeof(int), 1, fp);
-		char *tmp = new char[len];
+		char *tmp = new char[len + 1];
 		fread(tmp, sizeof(char), sizeof(char) * len, fp);
 		tmp[len] = '\0';
 		s = tmp;

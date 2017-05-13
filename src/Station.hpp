@@ -7,6 +7,8 @@
 #include "Time.hpp"
 #include "Ticket.hpp"
 
+#include <bits/stdc++.h>
+
 using std::string;
 
 class Station {

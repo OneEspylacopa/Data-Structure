@@ -61,15 +61,12 @@ class Date{
 			return year != date.year || month != date.month || day != date.day;
 		}
 		
-		friend binofstream& operator<<(binofstream &fout, const Date& date){   //???????const?... 
-			string str = date.GetDate();
-			fout << str;
+		friend binofstream& operator<<(binofstream &fout, const Date& date) {
+			fout << date.year << date.month << date.day;
 			return fout;
 		}
 		friend binifstream& operator>>(binifstream &fin, Date& date) {
-			string str;
-			fin >> str;
-			date.SetDate(str);
+			fin >> date.year >> date.month >> date.day;
 			return fin;
 		}
 }; 

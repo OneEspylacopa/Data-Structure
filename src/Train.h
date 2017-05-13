@@ -68,6 +68,7 @@ public:
 		
 		size_t size = vec.size();
 		fout << size;
+		
 		for(size_t i = 0; i < size; i++) {
 			fout << vec[i];
 		}
