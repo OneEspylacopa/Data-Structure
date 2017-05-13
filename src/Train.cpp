@@ -350,10 +350,10 @@ void Train::Import(const string &path) {
 					}
 				}
 			}
-			if(arriveTime != "ÆðµãÕ¾") {
+			if(arriveTime != "èµ·ç‚¹ç«™") {
 				station.arriveTime = Time(arriveTime.c_str());
 			}
-			if(stopTime != "ÖÕµ½Õ¾") {
+			if(stopTime != "ç»ˆåˆ°ç«™") {
 				station.stopTime = Time(stopTime.c_str());
 			}
 			for(int i = 0; i < SEAT_TYPE_NUM; i++) {

@@ -6,50 +6,50 @@
 const int SEAT_TYPE_NUM = 12;
 
 enum SeatType {
-	FirstClass = 0, // Ò»µÈ×ù 
-	SecondClass = 1, // ¶şµÈ×ù
-	NoSeat = 2, // ÎŞ×ù 
-	BusinessSeat = 3, // ÉÌÎñ×ù 
-	HardSeat = 4, // Ó²×ù
-	SoftSeat = 5, // Èí×ù
-	HardSleeperUp = 6, // Ó²ÎÔÉÏ
-	HardSleeperMiddle = 7, // Ó²ÎÔÖĞ 
-	HardSleeperDown = 8, // Ó²ÎÔÏÂ
-	SoftSleeperDown = 9, // ÈíÎÔÏÂ
-	AdvancedSoftSleeper = 10, // ¸ß¼¶ÈíÎÔ
-	SpecialSeat = 11 //ÌØµÈ×ù 
+	FirstClass = 0, // ä¸€ç­‰åº§ 
+	SecondClass = 1, // äºŒç­‰åº§
+	NoSeat = 2, // æ— åº§ 
+	BusinessSeat = 3, // å•†åŠ¡åº§ 
+	HardSeat = 4, // ç¡¬åº§
+	SoftSeat = 5, // è½¯åº§
+	HardSleeperUp = 6, // ç¡¬å§ä¸Š
+	HardSleeperMiddle = 7, // ç¡¬å§ä¸­ 
+	HardSleeperDown = 8, // ç¡¬å§ä¸‹
+	SoftSleeperDown = 9, // è½¯å§ä¸‹
+	AdvancedSoftSleeper = 10, // é«˜çº§è½¯å§
+	SpecialSeat = 11 //ç‰¹ç­‰åº§ 
 };
 
 static string GetSeatType(SeatType type) {
 	std::string result;
-	if (type == FirstClass) result += "Ò»µÈ×ù";
-	if (type == SecondClass) result += "¶şµÈ×ù";
-	if (type == NoSeat) result += "ÎŞ×ù";
-	if (type == BusinessSeat) result += "ÉÌÎñ×ù";
-	if (type == HardSeat) result += "Ó²×ù";
-	if (type == SoftSeat) result += "Èí×ù";
-	if (type == HardSleeperUp) result += "Ó²ÎÔÉÏ";
-	if (type == HardSleeperMiddle) result += "Ó²ÎÔÖĞ";
-	if (type == HardSleeperDown) result += "Ó²ÎÔÏÂ";
-	if (type == SoftSleeperDown) result += "ÈíÎÔÏÂ";
-	if (type == AdvancedSoftSleeper) result += "¸ß¼¶ÈíÎÔ";
-	if (type == SpecialSeat) result += "ÌØµÈ×ù";
+	if (type == FirstClass) result += "ä¸€ç­‰åº§";
+	if (type == SecondClass) result += "äºŒç­‰åº§";
+	if (type == NoSeat) result += "æ— åº§";
+	if (type == BusinessSeat) result += "å•†åŠ¡åº§";
+	if (type == HardSeat) result += "ç¡¬åº§";
+	if (type == SoftSeat) result += "è½¯åº§";
+	if (type == HardSleeperUp) result += "ç¡¬å§ä¸Š";
+	if (type == HardSleeperMiddle) result += "ç¡¬å§ä¸­";
+	if (type == HardSleeperDown) result += "ç¡¬å§ä¸‹";
+	if (type == SoftSleeperDown) result += "è½¯å§ä¸‹";
+	if (type == AdvancedSoftSleeper) result += "é«˜çº§è½¯å§";
+	if (type == SpecialSeat) result += "ç‰¹ç­‰åº§";
 	return result;
 }
 
 static SeatType GetSeatType(const string &type) {
-	if (type == "Ò»µÈ×ù") return FirstClass;
-	if (type == "¶şµÈ×ù") return SecondClass;
-	if (type == "ÎŞ×ù") return NoSeat;
-	if (type == "ÉÌÎñ×ù") return BusinessSeat;
-	if (type == "Ó²×ù") return HardSeat;
-	if (type == "Èí×ù") return SoftSeat;
-	if (type == "Ó²ÎÔÉÏ") return HardSleeperUp;
-	if (type == "Ó²ÎÔÖĞ") return HardSleeperMiddle;
-	if (type == "Ó²ÎÔÏÂ") return HardSleeperDown;
-	if (type == "ÈíÎÔÏÂ") return SoftSleeperDown;
-	if (type == "¸ß¼¶ÈíÎÔ") return AdvancedSoftSleeper;
-	if (type == "ÌØµÈ×ù") return SpecialSeat;
+	if (type == "ä¸€ç­‰åº§") return FirstClass;
+	if (type == "äºŒç­‰åº§") return SecondClass;
+	if (type == "æ— åº§") return NoSeat;
+	if (type == "å•†åŠ¡åº§") return BusinessSeat;
+	if (type == "ç¡¬åº§") return HardSeat;
+	if (type == "è½¯åº§") return SoftSeat;
+	if (type == "ç¡¬å§ä¸Š") return HardSleeperUp;
+	if (type == "ç¡¬å§ä¸­") return HardSleeperMiddle;
+	if (type == "ç¡¬å§ä¸‹") return HardSleeperDown;
+	if (type == "è½¯å§ä¸‹") return SoftSleeperDown;
+	if (type == "é«˜çº§è½¯å§") return AdvancedSoftSleeper;
+	if (type == "ç‰¹ç­‰åº§") return SpecialSeat;
 	//throw(false);
 	return FirstClass;
 }
