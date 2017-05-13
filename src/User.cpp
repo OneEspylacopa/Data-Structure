@@ -58,30 +58,51 @@ bool User::ReturnTicket(const TicketInfo &info) {
 }
 
 int User::GetUserType() const {
-	return 0;
+	return isAdmin;
 }
 
 bool User::AddPlan(const Date &date, const TrainNumber &trainNumber) {
+	if(!isAdmin) {
+		return false;
+	}
 	return sys->train.AddPlan(date, trainNumber);
 }
 bool User::ModifyPlan(const Date &date, const TrainNumber &trainNumber) {
+	if(!isAdmin) {
+		return false;
+	}
 	return sys->train.ModifyPlan(date, trainNumber);
 }
 bool User::CancelPlan(const Date &date, const string &number) {
+	if(!isAdmin) {
+		return false;
+	}
 	return sys->train.CancelPlan(date, number);
 }
 bool User::StartSelling(const Date &date, const string &number) {
+	if(!isAdmin) {
+		return false;
+	}
 	return sys->train.StartSelling(date, number);
 }
 bool User::StopSelling(const Date &date, const string &number) {
+	if(!isAdmin) {
+		return false;
+	}
 	return sys->train.StopSelling(date, number);
 }
 
 const Log User::QueryUser(const string &userID) const {
+	if(!isAdmin) {
+		return Log();
+	}
 	return sys->user.GetUser(userID)->GetLog();
 }
 
 string User::SystemHistory() const {
+	if(!isAdmin) {
+		return "";
+	}
 	return sys->user.SystemHistory();
 }
 

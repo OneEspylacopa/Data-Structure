@@ -262,6 +262,9 @@ bool Train::CancelPlan(const Date &date, const string &number) {
 		return trains[date].CancelPlan(number);
 	}
 }
+TrainNumber Train::GetTrainNumber(const Date &date, const string &number) {
+	
+}
 void Train::Import(const string &path) {
 	std::ifstream fin(path.c_str());
 	if(!fin.is_open()) {

@@ -145,6 +145,7 @@ public:
 	bool AddPlan(const Date &date, const TrainNumber &trainNumber);
 	bool ModifyPlan(const Date &date, const TrainNumber &trainNumber);
 	bool CancelPlan(const Date &date, const string &number);
+	TrainNumber GetTrainNumber(const Date &date, const string &number);
 	
 	void Import(const string &path);
 	

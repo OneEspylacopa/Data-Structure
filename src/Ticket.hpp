@@ -1,7 +1,7 @@
 #ifndef TICKET_HPP
 #define TICKET_HPP
 
-#include <cstring>
+#include <string>
 
 const int SEAT_TYPE_NUM = 12;
 

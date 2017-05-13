@@ -12,7 +12,7 @@
 using std::string;
 
 class User {
-protected:
+private:
 	TrainSystem *sys;
 	
 	string name; // username
@@ -57,12 +57,13 @@ public:
 	
 	string SystemHistory() const;
 	
+	// I/O
 	friend binifstream& operator>>(binifstream &fin, User &rhs) {
-		fin >> rhs.name >> rhs.userID >> rhs.password >> rhs.isAdmin >> rhs.log;
+		fin >> rhs.name >> rhs.userID >> rhs.password >> rhs.isAdmin >> rhs.log >> rhs.tickets;
 		return fin;
 	}
 	friend binofstream& operator<<(binofstream &fout, const User &rhs) {
-		fout << rhs.name << rhs.userID << rhs.password << rhs.isAdmin << rhs.log;
+		fout << rhs.name << rhs.userID << rhs.password << rhs.isAdmin << rhs.log << rhs.tickets;
 		return fout;
 	}
 };
