@@ -9,6 +9,7 @@
 #include "Log.hpp"
 #include "Ticket.hpp"
 
+#include <bits/stdc++.h>
 using std::string;
 using sjtu::pair;
 
