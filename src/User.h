@@ -22,6 +22,8 @@ protected:
 	
 	Log log; // user's log
 	
+	map<TicketInfo, int> tickets; // info -> count
+	
 public:
 	User() { }
 	User(TrainSystem *sys);
@@ -35,42 +37,16 @@ public:
 	string GetPassword() const;
 	Log GetLog() const;
 	
-	virtual int GetUserType() const { };
+	int GetUserType() const;
 	
-	friend binifstream& operator>>(binifstream &fin, User &rhs) {
-		fin >> rhs.name >> rhs.userID >> rhs.password >> rhs.isAdmin >> rhs.log;
-		return fin;
-	}
-	friend binofstream& operator<<(binofstream &fout, const User &rhs) {
-		fout << rhs.name << rhs.userID << rhs.password << rhs.isAdmin << rhs.log;
-		return fout;
-	}
-};
-
-class GeneralUser : public User {
-private:
-	map<TicketInfo, int> tickets; // info -> count
-	
-public:
-	GeneralUser();
-	GeneralUser(TrainSystem *sys, const string &name, const string &userID, const string &password, const bool &isAdmin);
-	~GeneralUser();
-	
+	//General User
 	vector<TicketsInfo> QueryTicket(const Date &date, const string &start, const string &end) const;
 	vector<TicketInfo> GetOrders() const;
 	
 	bool BookTicket(const TicketInfo &info);
 	bool ReturnTicket(const TicketInfo &info);
 	
-	int GetUserType() const;
-};
-
-class Administrator : public User {
-public:
-	Administrator();
-	Administrator(TrainSystem *sys, const string &name, const string &userID, const string &password, const bool &isAdmin);
-	~Administrator();
-	
+	//Administrator
 	bool AddPlan(const Date &date, const TrainNumber &trainNumber);
 	bool ModifyPlan(const Date &date, const TrainNumber &trainNumber);
 	bool CancelPlan(const Date &date, const string &number);
@@ -81,7 +57,14 @@ public:
 	
 	string SystemHistory() const;
 	
-	int GetUserType() const;
+	friend binifstream& operator>>(binifstream &fin, User &rhs) {
+		fin >> rhs.name >> rhs.userID >> rhs.password >> rhs.isAdmin >> rhs.log;
+		return fin;
+	}
+	friend binofstream& operator<<(binofstream &fout, const User &rhs) {
+		fout << rhs.name << rhs.userID << rhs.password << rhs.isAdmin << rhs.log;
+		return fout;
+	}
 };
 	
 class AllUser {

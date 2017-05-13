@@ -23,14 +23,10 @@ Log User::GetLog() const {
 	return log;
 }
 
-GeneralUser::GeneralUser() : User(sys) { }
-GeneralUser::GeneralUser(TrainSystem *sys, const string &name, const string &userID, const string &password, const bool &isAdmin) : User(sys, name, userID, password, isAdmin) { }
-GeneralUser::~GeneralUser() { }
-
-vector<TicketsInfo> GeneralUser::QueryTicket(const Date &date, const string &start, const string &end) const {
+vector<TicketsInfo> User::QueryTicket(const Date &date, const string &start, const string &end) const {
 	return sys->train.QueryTicket(date, start, end);
 }
-vector<TicketInfo> GeneralUser::GetOrders() const {
+vector<TicketInfo> User::GetOrders() const {
 	vector<TicketInfo> result;
 	for(map<TicketInfo, int>::const_iterator it = tickets.cbegin(); it != tickets.cend(); it++) {
 		result.push_back(it->first);
@@ -38,7 +34,7 @@ vector<TicketInfo> GeneralUser::GetOrders() const {
 	}
 	return result;
 }
-bool GeneralUser::BookTicket(const TicketInfo &info) {
+bool User::BookTicket(const TicketInfo &info) {
 	// return true if succeed, false if fail
 	bool success = sys->train.BookTicket(info);
 	if(success) {
@@ -48,7 +44,7 @@ bool GeneralUser::BookTicket(const TicketInfo &info) {
 	return success;
 }
 
-bool GeneralUser::ReturnTicket(const TicketInfo &info) {
+bool User::ReturnTicket(const TicketInfo &info) {
 	// return true if succeed, false if fail
 	bool success = sys->train.ReturnTicket(info);
 	if(success) {
@@ -61,40 +57,32 @@ bool GeneralUser::ReturnTicket(const TicketInfo &info) {
 	return success;
 }
 
-int GeneralUser::GetUserType() const {
-	std::cout << "ok" << std::endl;
+int User::GetUserType() const {
 	return 0;
 }
 
-Administrator::Administrator() : User(sys) {}
-Administrator::Administrator(TrainSystem *sys, const string &name, const string &userID, const string &password, const bool &isAdmin) : User(sys, name, userID, password, isAdmin) { }
-Administrator::~Administrator() {}
-
-bool Administrator::AddPlan(const Date &date, const TrainNumber &trainNumber) {
+bool User::AddPlan(const Date &date, const TrainNumber &trainNumber) {
 	return sys->train.AddPlan(date, trainNumber);
 }
-bool Administrator::ModifyPlan(const Date &date, const TrainNumber &trainNumber) {
+bool User::ModifyPlan(const Date &date, const TrainNumber &trainNumber) {
 	return sys->train.ModifyPlan(date, trainNumber);
 }
-bool Administrator::CancelPlan(const Date &date, const string &number) {
+bool User::CancelPlan(const Date &date, const string &number) {
 	return sys->train.CancelPlan(date, number);
 }
-bool Administrator::StartSelling(const Date &date, const string &number) {
+bool User::StartSelling(const Date &date, const string &number) {
 	return sys->train.StartSelling(date, number);
 }
-bool Administrator::StopSelling(const Date &date, const string &number) {
+bool User::StopSelling(const Date &date, const string &number) {
 	return sys->train.StopSelling(date, number);
 }
 
-const Log Administrator::QueryUser(const string &userID) const {
+const Log User::QueryUser(const string &userID) const {
 	return sys->user.GetUser(userID)->GetLog();
 }
 
-string Administrator::SystemHistory() const {
+string User::SystemHistory() const {
 	return sys->user.SystemHistory();
-}
-int Administrator::GetUserType() const {
-	return 1;
 }
 
 AllUser::AllUser(TrainSystem* sys) : sys(sys) {}
@@ -122,11 +110,7 @@ User* AllUser::Register(const string &name, const string &userID, const string &
 	if(map.count(userID)) {
 		return nullptr;
 	} else {
-		if(isAdmin) {
-			return &(map[userID] = Administrator(sys, name, userID, SHA512::GetHash(password), isAdmin));
-		} else {
-			return &(map[userID] = GeneralUser(sys, name, userID, SHA512::GetHash(password), isAdmin));
-		}
+		return &(map[userID] = User(sys, name, userID, SHA512::GetHash(password), isAdmin));
 		
 	}
 }
