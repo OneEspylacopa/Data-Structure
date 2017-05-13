@@ -119,7 +119,7 @@ User* AllUser::Register(const string &name, const string &userID, const string &
 	if(map.count(userID)) {
 		return nullptr;
 	} else {
-		return &(map[userID] = User(sys, name, userID, SHA512::GetHash(password), false));
+		return &(map[userID] = User(sys, name, userID, SHA512::GetHash(password), isAdmin));
 	}
 }
 string AllUser::SystemHistory() const {
