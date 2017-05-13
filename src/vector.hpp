@@ -73,7 +73,7 @@ public:
                 p -> ~T();
             }
             ::operator delete(tem);
-            Maxsize = size;
+            currentLen = Maxsize = size;
         }
 
         else{
