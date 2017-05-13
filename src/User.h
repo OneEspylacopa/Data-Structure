@@ -18,12 +18,14 @@ protected:
 	string name; // username
 	string userID; // user's ID 
 	string password; // user's password 
+	bool isAdmin;
+	
 	Log log; // user's log
 	
 public:
 	User() { }
 	User(TrainSystem *sys);
-	User(TrainSystem *sys, const string &name, const string &userID, const string &password);
+	User(TrainSystem *sys, const string &name, const string &userID, const string &password, const bool &isAdmin);
 	~User();
 	
 	void ModifyInfo(const string &_name, const string &_password);
@@ -34,11 +36,11 @@ public:
 	Log GetLog() const;
 	
 	friend binifstream& operator>>(binifstream &fin, User &rhs) {
-		fin >> rhs.name >> rhs.userID >> rhs.password >> rhs.log;
+		fin >> rhs.name >> rhs.userID >> rhs.password >> rhs.isAdmin >> rhs.log;
 		return fin;
 	}
 	friend binofstream& operator<<(binofstream &fout, const User &rhs) {
-		fout << rhs.name << rhs.userID << rhs.password << rhs.log;
+		fout << rhs.name << rhs.userID << rhs.password << rhs.isAdmin << rhs.log;
 		return fout;
 	}
 };
@@ -56,6 +58,8 @@ public:
 	
 	bool BookTicket(const TicketInfo &info);
 	bool ReturnTicket(const TicketInfo &info);
+	
+	int GetUserType() const;
 };
 
 class Administrator : public User {
@@ -72,6 +76,8 @@ public:
 	const Log QueryUser(const string &userID) const;
 	
 	string SystemHistory() const;
+	
+	int GetUserType() const;
 };
 	
 class AllUser {
@@ -87,7 +93,7 @@ public:
 	
 	User* GetUser(const string &userID);
 	User* Login(const string &userID, const string &password);
-	User* Register(const string &name, const string &userID, const string &password);
+	User* Register(const string &name, const string &userID, const string &password, const bool &isAdmin);
 	
 	string SystemHistory() const;
 	

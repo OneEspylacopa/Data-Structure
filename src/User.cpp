@@ -1,7 +1,7 @@
 #include "TrainSystem.h"
 
 User::User(TrainSystem *sys) : sys(sys) { }
-User::User(TrainSystem *sys, const string &name, const string &userID, const string &password) : sys(sys), name(name), userID(userID), password(password) { }
+User::User(TrainSystem *sys, const string &name, const string &userID, const string &password, const bool &isAdmin) : sys(sys), name(name), userID(userID), password(password), isAdmin(isAdmin) { }
 User::~User() { }
 
 void User::ModifyInfo(const string &_name, const string &_password) {
@@ -60,6 +60,10 @@ bool GeneralUser::ReturnTicket(const TicketInfo &info) {
 	return success;
 }
 
+int GeneralUser::GetUserType() const {
+	return 0;
+}
+
 Administrator::Administrator() : User(sys) {}
 Administrator::~Administrator() {}
 
@@ -86,7 +90,10 @@ const Log Administrator::QueryUser(const string &userID) const {
 string Administrator::SystemHistory() const {
 	return sys->user.SystemHistory();
 }
-	
+int Administrator::GetUserType() const {
+	return 1;
+}
+
 AllUser::AllUser(TrainSystem* sys) : sys(sys) {}
 AllUser::~AllUser() {}
 
@@ -108,11 +115,11 @@ User* AllUser::Login(const string &userID, const string &password) {
 		}
 	}
 }
-User* AllUser::Register(const string &name, const string &userID, const string &password) {
+User* AllUser::Register(const string &name, const string &userID, const string &password, const bool &isAdmin) {
 	if(map.count(userID)) {
 		return nullptr;
 	} else {
-		return &(map[userID] = User(sys, name, userID, SHA512::GetHash(password)));
+		return &(map[userID] = User(sys, name, userID, SHA512::GetHash(password), false));
 	}
 }
 string AllUser::SystemHistory() const {
