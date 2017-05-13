@@ -16,8 +16,8 @@ protected:
 	TrainSystem *sys;
 	
 	string name; // username
-	string userID; // user's ID 
-	string password; // user's password 
+	string userID; // user's ID
+	string password; // user's password
 	bool isAdmin;
 	
 	Log log; // user's log
@@ -35,6 +35,8 @@ public:
 	string GetPassword() const;
 	Log GetLog() const;
 	
+	virtual int GetUserType() const { };
+	
 	friend binifstream& operator>>(binifstream &fin, User &rhs) {
 		fin >> rhs.name >> rhs.userID >> rhs.password >> rhs.isAdmin >> rhs.log;
 		return fin;
@@ -51,6 +53,7 @@ private:
 	
 public:
 	GeneralUser();
+	GeneralUser(TrainSystem *sys, const string &name, const string &userID, const string &password, const bool &isAdmin);
 	~GeneralUser();
 	
 	vector<TicketsInfo> QueryTicket(const Date &date, const string &start, const string &end) const;
@@ -65,6 +68,7 @@ public:
 class Administrator : public User {
 public:
 	Administrator();
+	Administrator(TrainSystem *sys, const string &name, const string &userID, const string &password, const bool &isAdmin);
 	~Administrator();
 	
 	bool AddPlan(const Date &date, const TrainNumber &trainNumber);

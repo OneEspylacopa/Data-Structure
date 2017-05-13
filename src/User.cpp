@@ -24,6 +24,7 @@ Log User::GetLog() const {
 }
 
 GeneralUser::GeneralUser() : User(sys) { }
+GeneralUser::GeneralUser(TrainSystem *sys, const string &name, const string &userID, const string &password, const bool &isAdmin) : User(sys, name, userID, password, isAdmin) { }
 GeneralUser::~GeneralUser() { }
 
 vector<TicketsInfo> GeneralUser::QueryTicket(const Date &date, const string &start, const string &end) const {
@@ -61,10 +62,12 @@ bool GeneralUser::ReturnTicket(const TicketInfo &info) {
 }
 
 int GeneralUser::GetUserType() const {
+	std::cout << "ok" << std::endl;
 	return 0;
 }
 
 Administrator::Administrator() : User(sys) {}
+Administrator::Administrator(TrainSystem *sys, const string &name, const string &userID, const string &password, const bool &isAdmin) : User(sys, name, userID, password, isAdmin) { }
 Administrator::~Administrator() {}
 
 bool Administrator::AddPlan(const Date &date, const TrainNumber &trainNumber) {
@@ -119,7 +122,12 @@ User* AllUser::Register(const string &name, const string &userID, const string &
 	if(map.count(userID)) {
 		return nullptr;
 	} else {
-		return &(map[userID] = User(sys, name, userID, SHA512::GetHash(password), isAdmin));
+		if(isAdmin) {
+			return &(map[userID] = Administrator(sys, name, userID, SHA512::GetHash(password), isAdmin));
+		} else {
+			return &(map[userID] = GeneralUser(sys, name, userID, SHA512::GetHash(password), isAdmin));
+		}
+		
 	}
 }
 string AllUser::SystemHistory() const {

@@ -101,8 +101,8 @@ public:
 		return *this;
 	}
 	
-	binofstream& operator<<(const size_t &x) {
-		fwrite(&x, sizeof(size_t), 1, fp);
+	binofstream& operator<<(const unsigned long long &x) {
+		fwrite(&x, sizeof(unsigned long long), 1, fp);
 		return *this;
 	}
 	
