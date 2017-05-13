@@ -28,6 +28,11 @@ private:
     int currentLen;
 public:
     void doublespace(){
+    	if(data == NULL){                        //add
+    		Maxsize = 10;
+    		data = (T*)::operator new(Maxsize*sizeof(T));
+    		return;
+		} 
         T *tem = data;
         Maxsize *= 2;
         data = (T*)::operator new(Maxsize*sizeof(T));
@@ -42,6 +47,10 @@ public:
     }
 
     void resize(size_t size){
+    	if(data == NULL){
+    		Maxsize = 10;
+    		data = (T*)::operator new(Maxsize*sizeof(T));
+		}
         if(size < currentLen){
             for(int i = size;i < currentLen;i++){
                 T* p = data + i;
@@ -203,6 +212,7 @@ class const_iterator {
             new (data + i) T (other[i]);
     }
     ~vector() {
+    	if(data == NULL)return;
         for(int i = currentLen - 1;i >= 0;i--){
             T* p = data + i;
             p -> ~T();
@@ -269,6 +279,7 @@ class const_iterator {
         }
         ::operator delete(data);
         Maxsize = currentLen = 0;
+        data = NULL;
     }
     iterator insert(iterator pos, const T &value) {
         if(currentLen == Maxsize)doublespace();
