@@ -30,7 +30,7 @@ private:
 		if (t == BusinessSeat) s += "商务座";
 		if (t == HardSeat) s += "硬座";
 		if (t == SoftSeat) s += "软座";
-		if (t == HardSleeperUp) s += "硬卧上";w
+		if (t == HardSleeperUp) s += "硬卧上";
 		if (t == HardSleeperMiddle) s += "硬卧中";
 		if (t == HardSleeperDown) s += "硬卧下";
 		if (t == SoftSleeperDown) s += "软卧下";

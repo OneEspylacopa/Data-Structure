@@ -10,6 +10,8 @@
 #include "Ticket.hpp"
 
 using std::string;
+using sjtu::pair;
+using sjtu::make_pair;
 
 class User {
 private:
@@ -80,8 +82,8 @@ public:
 	~AllUser();
 	
 	User* GetUser(const string &userID);
-	User* Login(const string &userID, const string &password);
-	User* Register(const string &name, const string &userID, const string &password, const bool &isAdmin);
+	pair<User*, string> Login(const string &userID, const string &password);
+	pair<User*, string> Register(const string &name, const string &userID, const string &password, const bool &isAdmin);
 	
 	string SystemHistory() const;
 	

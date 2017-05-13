@@ -116,23 +116,31 @@ User* AllUser::GetUser(const string &userID) {
 		return &map[userID];
 	}
 }
-User* AllUser::Login(const string &userID, const string &password) {
+pair<User*, string> AllUser::Login(const string &userID, const string &password) {
 	if(!map.count(userID)) {
-		return nullptr;
+		return make_pair(nullptr, "该用户不存在");
 	} else {
 		if(map[userID].GetPassword() != SHA512::GetHash(password)) {
-			return nullptr;
+			return make_pair(nullptr, "密码错误");
 		} else {
-			return &map[userID];
+			return make_pair(&map[userID], "");
 		}
 	}
 }
-User* AllUser::Register(const string &name, const string &userID, const string &password, const bool &isAdmin) {
+pair<User*, string> AllUser::Register(const string &name, const string &userID, const string &password, const bool &isAdmin) {
+	if(name.size() < 5 || name.size() > 16) {
+		return make_pair(nullptr, "用户名长度不正确");
+	}
+	if(userID.size() != 9) {
+		return make_pair(nullptr, "ID格式不正确");
+	}
+	if(password.size() < 6 || password.size() > 16) {
+		return make_pair(nullptr, "密码长度不正确");
+	}
 	if(map.count(userID)) {
-		return nullptr;
+		return make_pair(nullptr, "该ID已占用");
 	} else {
-		return &(map[userID] = User(sys, name, userID, SHA512::GetHash(password), isAdmin));
-		
+		return make_pair(&(map[userID] = User(sys, name, userID, SHA512::GetHash(password), isAdmin)), "");
 	}
 }
 string AllUser::SystemHistory() const {
