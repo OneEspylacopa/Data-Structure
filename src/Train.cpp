@@ -222,7 +222,7 @@ bool Train::ReturnTicket(const TicketInfo &info) {
 vector<TicketsInfo> Train::QueryTicket(const Date &date, const string &start, const string &end) const {
 	if(!trains.count(date)) {
 		return vector<TicketsInfo>();
-	} else {
+    } else {
 		vector<TicketsInfo> ret = trains[date].QueryTicket(start, end);
 		for(int i = 0; i < (int) ret.size(); i++) {
 			ret[i].date = date;
@@ -274,14 +274,14 @@ void Train::Import(const string &path) {
 	Date date;
 	
 	string number, str;
-	fin >> str;
+    fin >> str;
 	
 	while(!fin.eof()) {
 		string strType1, strType2, strType3;
 		SeatType type1, type2, type3;
 		
 		number = str;
-		TrainNumber trainNumber(number);
+        TrainNumber trainNumber(number);
 		
 		fin >> str;
 		
@@ -357,12 +357,15 @@ void Train::Import(const string &path) {
 				station.stopTime = Time(stopTime.c_str());
 			}
 			for(int i = 0; i < SEAT_TYPE_NUM; i++) {
-				station.seatCount[i] = 2000;
+                station.seatCount[i] = 0;
 			}
+            station.seatCount[(int) type1] = 2000;
+            station.seatCount[(int) type2] = 2000;
+            station.seatCount[(int) type3] = 2000;
 			station.price[(int) type1] = atof(price1.c_str());
 			station.price[(int) type2] = atof(price2.c_str());
 			station.price[(int) type3] = atof(price3.c_str());
-			
+
 			trainNumber.AddStation(station);
 		}
 		

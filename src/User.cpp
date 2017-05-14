@@ -6,9 +6,16 @@ User::User(TrainSystem *sys) : sys(sys) { }
 User::User(TrainSystem *sys, const string &name, const string &userID, const string &password, const bool &isAdmin) : sys(sys), name(name), userID(userID), password(password), isAdmin(isAdmin) { }
 User::~User() { }
 
-void User::ModifyInfo(const string &_name, const string &_password) {
+string User::ModifyInfo(const string &_name, const string &_password) {
+	if(_name.size() < 5 || _name.size() > 16) {
+		return string("ç”¨æˆ·åé•¿åº¦ä¸æ­£ç¡®");
+	}
+	if(_password.size() < 6 || _password.size() > 16) {
+		return string("å¯†ç é•¿åº¦ä¸æ­£ç¡®");
+	}
 	name = _name;
 	password = _password;
+	return string();
 }
 
 string User::GetName() const {
@@ -48,6 +55,23 @@ bool User::BookTicket(const TicketInfo &info) {
 
 bool User::ReturnTicket(const TicketInfo &info) {
 	// return true if succeed, false if fail
+    vector<TicketInfo> G = GetOrders();
+    int pos;
+    for (int i = 0; i < G.size(); i++) {
+        if (G[i].date.GetDate() == info.date.GetDate() &&
+            G[i].time.GetTime() == info.time.GetTime() &&
+            G[i].trainNumber == info.trainNumber &&
+            G[i].start == info.start &&
+            G[i].end == info.end &&
+            G[i].type == info.type &&
+            G[i].price == info.price) {
+            pos = i;
+            break;
+        }
+    }
+    if (G[pos].count < info.count) {
+        return false;
+    }
 	bool success = sys->train.ReturnTicket(info);
 	if(success) {
 		tickets[info] -= info.count;
@@ -120,10 +144,10 @@ User* AllUser::GetUser(const string &userID) {
 }
 pair<User*, string> AllUser::Login(const string &userID, const string &password) {
 	if(!map.count(userID)) {
-		return sjtu::make_pair((User*) nullptr, string("¸ÃÓÃ»§²»´æÔÚ"));
+		return sjtu::make_pair((User*) nullptr, string("è¯¥ç”¨æˆ·ä¸å­˜åœ¨"));
 	} else {
 		if(map[userID].GetPassword() != SHA512::GetHash(password)) {
-			return sjtu::make_pair((User*) nullptr, string("ÃÜÂë´íÎó"));
+			return sjtu::make_pair((User*) nullptr, string("å¯†ç é”™è¯¯"));
 		} else {
 			return sjtu::make_pair(&map[userID], string());
 		}
@@ -131,19 +155,19 @@ pair<User*, string> AllUser::Login(const string &userID, const string &password)
 }
 pair<User*, string> AllUser::Register(const string &name, const string &userID, const string &password, const bool &isAdmin) {
 	if(name.size() < 5 || name.size() > 16) {
-		return sjtu::make_pair((User*) nullptr, string("ÓÃ»§Ãû³¤¶È²»ÕıÈ·"));
+		return sjtu::make_pair((User*) nullptr, string("ç”¨æˆ·åé•¿åº¦ä¸æ­£ç¡®"));
 	}
 	if(userID.size() != 9) {
-		return sjtu::make_pair((User*) nullptr, string("ID¸ñÊ½²»ÕıÈ·"));
+		return sjtu::make_pair((User*) nullptr, string("IDæ ¼å¼ä¸æ­£ç¡®"));
 	}
 	if(userID == "000000000") {
-		return sjtu::make_pair((User*) nullptr, string("¸ÃIDÎŞĞ§"));
+		return sjtu::make_pair((User*) nullptr, string("è¯¥IDæ— æ•ˆ"));
 	}
 	if(password.size() < 6 || password.size() > 16) {
-		return sjtu::make_pair((User*) nullptr, string("ÃÜÂë³¤¶È²»ÕıÈ·"));
+		return sjtu::make_pair((User*) nullptr, string("å¯†ç é•¿åº¦ä¸æ­£ç¡®"));
 	}
 	if(map.count(userID)) {
-		return sjtu::make_pair((User*) nullptr, string("¸ÃIDÒÑÕ¼ÓÃ"));
+		return sjtu::make_pair((User*) nullptr, string("è¯¥IDå·²å ç”¨"));
 	} else {
 		return sjtu::make_pair(&(map[userID] = User(sys, name, userID, SHA512::GetHash(password), isAdmin)), string());
 	}

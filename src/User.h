@@ -32,7 +32,7 @@ public:
 	User(TrainSystem *sys, const string &name, const string &userID, const string &password, const bool &isAdmin);
 	~User();
 	
-	void ModifyInfo(const string &_name, const string &_password);
+    string ModifyInfo(const string &_name, const string &_password);
 	
 	string GetName() const;
 	string GetID() const;
