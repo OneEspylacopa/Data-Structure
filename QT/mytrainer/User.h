@@ -9,59 +9,46 @@
 #include "Log.hpp"
 #include "Ticket.hpp"
 
+#include <bits/stdc++.h>
 using std::string;
+using sjtu::pair;
 
 class User {
-protected:
+private:
 	TrainSystem *sys;
 	
 	string name; // username
-	string userID; // user's ID 
-	string password; // user's password 
+	string userID; // user's ID
+	string password; // user's password
+	bool isAdmin;
+	
 	Log log; // user's log
 	
-	vector<TicketInfo> tickets;
+	map<TicketInfo, int> tickets; // info -> count
 	
 public:
 	User() { }
 	User(TrainSystem *sys);
-	User(TrainSystem *sys, const string &name, const string &userID, const string &password);
+	User(TrainSystem *sys, const string &name, const string &userID, const string &password, const bool &isAdmin);
 	~User();
 	
-	friend binifstream& operator>>(binifstream &fin, User &rhs) {
-		fin >> rhs.name >> rhs.userID >> rhs.password >> rhs.log;
-		return fin;
-	}
-	friend binofstream& operator<<(binofstream &fout, const User &rhs) {
-		fout << rhs.name << rhs.userID << rhs.password << rhs.log;
-		return fout;
-	}
-
-	void ModifyInfo(const string &_name, const string &_password);
+    string ModifyInfo(const string &_name, const string &_password);
 	
 	string GetName() const;
-	
 	string GetID() const;
 	string GetPassword() const;
 	Log GetLog() const;
-};
-
-class GeneralUser : public User {
-public:
-	GeneralUser();
-	~GeneralUser();
 	
-	vector<TicketInfo> QueryTicket(const string &start, const string &end, const Date &date) const;
+	int GetUserType() const;
+	
+	//General User
+	vector<TicketsInfo> QueryTicket(const Date &date, const string &start, const string &end) const;
+	vector<TicketInfo> GetOrders() const;
 	
 	bool BookTicket(const TicketInfo &info);
 	bool ReturnTicket(const TicketInfo &info);
-};
-
-class Administrator : public User {
-public:
-	Administrator();
-	~Administrator();
 	
+	//Administrator
 	bool AddPlan(const Date &date, const TrainNumber &trainNumber);
 	bool ModifyPlan(const Date &date, const TrainNumber &trainNumber);
 	bool CancelPlan(const Date &date, const string &number);
@@ -71,6 +58,16 @@ public:
 	const Log QueryUser(const string &userID) const;
 	
 	string SystemHistory() const;
+	
+	// I/O
+	friend binifstream& operator>>(binifstream &fin, User &rhs) {
+		fin >> rhs.name >> rhs.userID >> rhs.password >> rhs.isAdmin >> rhs.log >> rhs.tickets;
+		return fin;
+	}
+	friend binofstream& operator<<(binofstream &fout, const User &rhs) {
+		fout << rhs.name << rhs.userID << rhs.password << rhs.isAdmin << rhs.log << rhs.tickets;
+		return fout;
+	}
 };
 	
 class AllUser {
@@ -85,13 +82,21 @@ public:
 	~AllUser();
 	
 	User* GetUser(const string &userID);
-	User* Login(const string &userID, const string &password);
-	User* Register(const string &name, const string &userID, const string &password);
+	pair<User*, string> Login(const string &userID, const string &password);
+	pair<User*, string> Register(const string &name, const string &userID, const string &password, const bool &isAdmin);
 	
 	string SystemHistory() const;
 	
-	binifstream& operator>>(binifstream &fin);
-	binofstream& operator<<(binofstream &fout);
+	void Import(const string &path);
+	
+	friend binifstream& operator>>(binifstream &fin, AllUser &user) {
+		fin >> user.map;
+		return fin;
+	}
+	friend binofstream& operator<<(binofstream &fout, const AllUser &user) {
+		fout << user.map;
+		return fout;
+	}
 };
 
 #endif

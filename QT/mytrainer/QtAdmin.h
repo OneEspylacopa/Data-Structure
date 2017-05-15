@@ -1,8 +1,8 @@
 ﻿#ifndef QtAdmin_H
 #define QtAdmin_H
-
 #include <QMainWindow>
-
+#include "TrainSystem.h"
+extern TrainSystem thomas;
 namespace Ui {
 class QtAdmin;
 }

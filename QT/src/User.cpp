@@ -1,7 +1,9 @@
 #include "TrainSystem.h"
 
+using sjtu::pair;
+
 User::User(TrainSystem *sys) : sys(sys) { }
-User::User(TrainSystem *sys, const string &name, const string &userID, const string &password) : sys(sys), name(name), userID(userID), password(password) { }
+User::User(TrainSystem *sys, const string &name, const string &userID, const string &password, const bool &isAdmin) : sys(sys), name(name), userID(userID), password(password), isAdmin(isAdmin) { }
 User::~User() { }
 
 void User::ModifyInfo(const string &_name, const string &_password) {
@@ -23,58 +25,89 @@ Log User::GetLog() const {
 	return log;
 }
 
-GeneralUser::GeneralUser() : User(sys) { }
-GeneralUser::~GeneralUser() { }
-
-vector<TicketInfo> GeneralUser::QueryTicket(const string &start, const string &end, const Date &date) const {
-	return sys->train.QueryTicket(start, end, date);
+vector<TicketsInfo> User::QueryTicket(const Date &date, const string &start, const string &end) const {
+	return sys->train.QueryTicket(date, start, end);
 }
-
-bool GeneralUser::BookTicket(const TicketInfo &info) {
+vector<TicketInfo> User::GetOrders() const {
+	vector<TicketInfo> result;
+	for(map<TicketInfo, int>::const_iterator it = tickets.cbegin(); it != tickets.cend(); it++) {
+		result.push_back(it->first);
+		result[(int) result.size() - 1].count = it->second;
+	}
+	return result;
+}
+bool User::BookTicket(const TicketInfo &info) {
 	// return true if succeed, false if fail
 	bool success = sys->train.BookTicket(info);
 	if(success) {
+		tickets[info] += info.count;
 		log.AddBook(info);
 	}
 	return success;
 }
 
-bool GeneralUser::ReturnTicket(const TicketInfo &info) {
+bool User::ReturnTicket(const TicketInfo &info) {
 	// return true if succeed, false if fail
 	bool success = sys->train.ReturnTicket(info);
 	if(success) {
+		tickets[info] -= info.count;
+		if(tickets[info] == 0) {
+			tickets.erase(tickets.find(info));
+		}
 		log.AddReturn(info);
 	}
 	return success;
 }
 
-Administrator::Administrator() : User(sys) {}
-Administrator::~Administrator() {}
+int User::GetUserType() const {
+	return isAdmin;
+}
 
-bool Administrator::AddPlan(const Date &date, const TrainNumber &trainNumber) {
+bool User::AddPlan(const Date &date, const TrainNumber &trainNumber) {
+	if(!isAdmin) {
+		return false;
+	}
 	return sys->train.AddPlan(date, trainNumber);
 }
-bool Administrator::ModifyPlan(const Date &date, const TrainNumber &trainNumber) {
+bool User::ModifyPlan(const Date &date, const TrainNumber &trainNumber) {
+	if(!isAdmin) {
+		return false;
+	}
 	return sys->train.ModifyPlan(date, trainNumber);
 }
-bool Administrator::CancelPlan(const Date &date, const string &number) {
+bool User::CancelPlan(const Date &date, const string &number) {
+	if(!isAdmin) {
+		return false;
+	}
 	return sys->train.CancelPlan(date, number);
 }
-bool Administrator::StartSelling(const Date &date, const string &number) {
+bool User::StartSelling(const Date &date, const string &number) {
+	if(!isAdmin) {
+		return false;
+	}
 	return sys->train.StartSelling(date, number);
 }
-bool Administrator::StopSelling(const Date &date, const string &number) {
+bool User::StopSelling(const Date &date, const string &number) {
+	if(!isAdmin) {
+		return false;
+	}
 	return sys->train.StopSelling(date, number);
 }
 
-const Log Administrator::QueryUser(const string &userID) const {
+const Log User::QueryUser(const string &userID) const {
+	if(!isAdmin) {
+		return Log();
+	}
 	return sys->user.GetUser(userID)->GetLog();
 }
 
-string Administrator::SystemHistory() const {
+string User::SystemHistory() const {
+	if(!isAdmin) {
+		return "";
+	}
 	return sys->user.SystemHistory();
 }
-	
+
 AllUser::AllUser(TrainSystem* sys) : sys(sys) {}
 AllUser::~AllUser() {}
 
@@ -85,22 +118,34 @@ User* AllUser::GetUser(const string &userID) {
 		return &map[userID];
 	}
 }
-User* AllUser::Login(const string &userID, const string &password) {
+pair<User*, string> AllUser::Login(const string &userID, const string &password) {
 	if(!map.count(userID)) {
-		return nullptr;
+		return sjtu::make_pair((User*) nullptr, string("该用户不存在"));
 	} else {
 		if(map[userID].GetPassword() != SHA512::GetHash(password)) {
-			return nullptr;
+			return sjtu::make_pair((User*) nullptr, string("密码错误"));
 		} else {
-			return &map[userID];
+			return sjtu::make_pair(&map[userID], string());
 		}
 	}
 }
-User* AllUser::Register(const string &name, const string &userID, const string &password) {
+pair<User*, string> AllUser::Register(const string &name, const string &userID, const string &password, const bool &isAdmin) {
+	if(name.size() < 5 || name.size() > 16) {
+		return sjtu::make_pair((User*) nullptr, string("用户名长度不正确"));
+	}
+	if(userID.size() != 9) {
+		return sjtu::make_pair((User*) nullptr, string("ID格式不正确"));
+	}
+	if(userID == "000000000") {
+		return sjtu::make_pair((User*) nullptr, string("该ID无效"));
+	}
+	if(password.size() < 6 || password.size() > 16) {
+		return sjtu::make_pair((User*) nullptr, string("密码长度不正确"));
+	}
 	if(map.count(userID)) {
-		return nullptr;
+		return sjtu::make_pair((User*) nullptr, string("该ID已占用"));
 	} else {
-		return &(map[userID] = User(sys, name, userID, SHA512::GetHash(password)));
+		return sjtu::make_pair(&(map[userID] = User(sys, name, userID, SHA512::GetHash(password), isAdmin)), string());
 	}
 }
 string AllUser::SystemHistory() const {
@@ -116,11 +161,13 @@ string AllUser::SystemHistory() const {
 	}
 	return result;
 }
-binifstream& AllUser::operator>>(binifstream &fin) {
-	fin >> map;
-	return fin;
-}
-binofstream& AllUser::operator<<(binofstream &fout) {
-	fout << map;
-	return fout;
+void AllUser::Import(const string &path) {
+	std::ifstream fin(path.c_str());
+	if(!fin.is_open()) {
+		return;
+	}
+	
+	while(!fin.eof()) {
+		
+	}
 }

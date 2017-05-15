@@ -44,7 +44,7 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>410</y>
+      <y>420</y>
       <width>72</width>
       <height>41</height>
      </rect>
@@ -53,7 +53,7 @@
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; font-weight:600;&quot;&gt;票型:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
+   <widget class="QLineEdit" name="startlineEdit">
     <property name="geometry">
      <rect>
       <x>140</x>
@@ -67,7 +67,7 @@
     <property name="geometry">
      <rect>
       <x>41</x>
-      <y>350</y>
+      <y>360</y>
       <width>81</width>
       <height>31</height>
      </rect>
@@ -89,7 +89,7 @@
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; font-weight:600;&quot;&gt;起点:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_4">
+   <widget class="QLineEdit" name="trainNumberlineEdit">
     <property name="geometry">
      <rect>
       <x>140</x>
@@ -99,90 +99,15 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_5">
+   <widget class="QLineEdit" name="countlineEdit">
     <property name="geometry">
      <rect>
       <x>140</x>
-      <y>350</y>
+      <y>360</y>
       <width>121</width>
       <height>31</height>
      </rect>
     </property>
-   </widget>
-   <widget class="QComboBox" name="comboBox">
-    <property name="geometry">
-     <rect>
-      <x>140</x>
-      <y>410</y>
-      <width>121</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <item>
-     <property name="text">
-      <string/>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>一等座</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>二等座</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>无座</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>商务座</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>硬座</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>软座</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>硬卧上</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>硬卧中</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>硬卧下</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>软卧下</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>高级软卧</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>特等座</string>
-     </property>
-    </item>
    </widget>
    <widget class="QLabel" name="label_3">
     <property name="geometry">
@@ -197,7 +122,7 @@
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; font-weight:600;&quot;&gt;终点:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_3">
+   <widget class="QLineEdit" name="terminuslineEdit">
     <property name="geometry">
      <rect>
       <x>140</x>
@@ -220,7 +145,7 @@
      <string>退票</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="datelineEdit">
     <property name="geometry">
      <rect>
       <x>140</x>
@@ -230,7 +155,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QListWidget" name="listWidget">
+   <widget class="QTableWidget" name="tableWidget">
     <property name="geometry">
      <rect>
       <x>310</x>
@@ -264,6 +189,16 @@
     </property>
     <property name="text">
      <string>返回</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="ticketTypelineEdit">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>430</y>
+      <width>121</width>
+      <height>31</height>
+     </rect>
     </property>
    </widget>
   </widget>

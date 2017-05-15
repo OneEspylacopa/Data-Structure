@@ -16,6 +16,7 @@ class Date{
 			day = 0;
 		}
 		Date(const string& str) {
+			day = month = year = 0; 
 			for(int i = 0;i < 4;i++){
 				year = year * 10 + str[i] - '0';
 			}
@@ -33,6 +34,7 @@ class Date{
 			char str[11];
 			int y = year, m = month , d = day;
 			for(int i = 3;i >= 0;i--,y/=10){
+			//	std::cout<<y;
 				str[i] = y % 10 + '0';
 			}
 			for(int i = 6;i >= 5;i--,m/=10){
@@ -43,8 +45,8 @@ class Date{
 			}
 			str[4] = str[7]  = '-';
 			str[10] = '\0';
-			string ans = str;
-			return ans;	
+//			string ans = str;
+			return str;	
 		}
 		bool operator<(const Date &date) const {          //?? ??? 
 			if(year != date.year){
@@ -59,15 +61,12 @@ class Date{
 			return year != date.year || month != date.month || day != date.day;
 		}
 		
-		friend binofstream& operator<<(binofstream &fout, const Date& date){   //???????const?... 
-			string str = date.GetDate();
-			fout << str;
+		friend binofstream& operator<<(binofstream &fout, const Date& date) {
+			fout << date.year << date.month << date.day;
 			return fout;
 		}
 		friend binifstream& operator>>(binifstream &fin, Date& date) {
-			string str;
-			fin >> str;
-			date.SetDate(str);
+			fin >> date.year >> date.month >> date.day;
 			return fin;
 		}
 }; 

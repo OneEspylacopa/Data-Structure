@@ -24,18 +24,18 @@ private:
     }
 	std::string GetCHN(SeatType t) {
 		std::string s = "";
-		if (t == FirstClass) s += "Ò»µÈ×ù"; 
-		if (t == SecondClass) s += "¶şµÈ×ù";
-		if (t == NoSeat) s += "ÎŞ×ù";
-		if (t == BusinessSeat) s += "ÉÌÎñ×ù";
-		if (t == HardSeat) s += "Ó²×ù";
-		if (t == SoftSeat) s += "Èí×ù";
-		if (t == HardSleeperUp) s += "Ó²ÎÔÉÏ";
-		if (t == HardSleeperMiddle) s += "Ó²ÎÔÖĞ";
-		if (t == HardSleeperDown) s += "Ó²ÎÔÏÂ";
-		if (t == SoftSleeperDown) s += "ÈíÎÔÏÂ";
-		if (t == AdvancedSoftSleeper) s += "¸ß¼¶ÈíÎÔ";
-		if (t == SpecialSeat) s += "ÌØµÈ×ù";
+		if (t == FirstClass) s += "ä¸€ç­‰åº§"; 
+		if (t == SecondClass) s += "äºŒç­‰åº§";
+		if (t == NoSeat) s += "æ— åº§";
+		if (t == BusinessSeat) s += "å•†åŠ¡åº§";
+		if (t == HardSeat) s += "ç¡¬åº§";
+		if (t == SoftSeat) s += "è½¯åº§";
+		if (t == HardSleeperUp) s += "ç¡¬å§ä¸Š";
+		if (t == HardSleeperMiddle) s += "ç¡¬å§ä¸­";
+		if (t == HardSleeperDown) s += "ç¡¬å§ä¸‹";
+		if (t == SoftSleeperDown) s += "è½¯å§ä¸‹";
+		if (t == AdvancedSoftSleeper) s += "é«˜çº§è½¯å§";
+		if (t == SpecialSeat) s += "ç‰¹ç­‰åº§";
 		return s;
 	}
 public:
@@ -58,7 +58,7 @@ public:
     friend binofstream& operator << (binofstream &fout, const Log &log) {
     	unsigned int n = log.logs.size();
     	fout << n << '\n';
-    	for (int i = 1; i <= n; ++i) {
+    	for (int i = 1; i <= (int) n; ++i) {
     		fout << log.logs[i] << '\n';
 		}
     	return fout;
@@ -66,7 +66,7 @@ public:
     friend binifstream& operator >> (binifstream &fin, Log &log) {
     	unsigned int n;
     	fin >> n;
-    	for (int i = 1; i <= n; ++i) {
+    	for (int i = 1; i <= (int) n; ++i) {
     		std::string s;
     		fin >> s;
     		log.logs.push_back(s);

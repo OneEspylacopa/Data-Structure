@@ -27,11 +27,11 @@ public:
 
 	string GetTime() const {
 		char a[6];
-		a[0] = char(hour % 10 + '0');
-		a[1] = char(hour / 10 + '0');
+		a[0] = char(hour / 10 + '0');
+		a[1] = char(hour % 10 + '0');
 		a[2] = ':';
-		a[3] = char(minute % 10 + '0');
-		a[4] = char(minute / 10 + '0');
+		a[3] = char(minute / 10 + '0');
+		a[4] = char(minute % 10 + '0');
 		a[5] = '\0';
 		string str = a;
 		return str;
@@ -49,14 +49,11 @@ public:
 	}
 	
 	friend binofstream& operator<<(binofstream& fout, const Time& obj) {
-		string str = obj.GetTime();
-		fout << str;
+		fout << obj.hour << obj.minute;
 		return fout;
 	}
 	friend binifstream& operator >> (binifstream& fin, Time& obj) {
-		string str;
-		fin >> str;
-		obj = Time(str);
+		fin >> obj.hour >> obj.minute;
 		return fin;
 	}
 };

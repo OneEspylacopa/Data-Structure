@@ -37,7 +37,10 @@ SOURCES += main.cpp\
     QtCancelPlan.cpp \
     QtBookTicket.cpp \
     QtGeneralUser.cpp \
-    QtModifyPlan.cpp
+    QtModifyPlan.cpp \
+    Train.cpp \
+    TrainSystem.cpp \
+    User.cpp
 
 HEADERS  += \
     QtLogin.h \
@@ -53,7 +56,22 @@ HEADERS  += \
     QtCancelPlan.h \
     QtBookTicket.h \
     QtGeneralUser.h \
-    QtModifyPlan.h
+    QtModifyPlan.h \
+    binfstream.hpp \
+    Date.hpp \
+    exceptions.hpp \
+    Log.hpp \
+    map.hpp \
+    SHA512.hpp \
+    Station.hpp \
+    Ticket.hpp \
+    Time.hpp \
+    Train.h \
+    TrainSystem.h \
+    User.h \
+    utility.hpp \
+    vector.hpp \
+    Transfer.hpp
 
 FORMS    += \
     QtLogin.ui \
@@ -70,3 +88,5 @@ FORMS    += \
     QtBookTicket.ui \
     QtGeneralUser.ui \
     QtModifyPlan.ui
+
+CONFIG   += c++11

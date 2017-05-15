@@ -53,7 +53,7 @@
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; font-weight:600;&quot;&gt;终点:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="datelineEdit">
     <property name="geometry">
      <rect>
       <x>130</x>
@@ -63,7 +63,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
+   <widget class="QLineEdit" name="startStationlineEdit">
     <property name="geometry">
      <rect>
       <x>130</x>
@@ -73,7 +73,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_3">
+   <widget class="QLineEdit" name="terminuslineEdit">
     <property name="geometry">
      <rect>
       <x>130</x>
@@ -83,7 +83,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QListWidget" name="listWidget">
+   <widget class="QTableWidget" name="tableWidget">
     <property name="geometry">
      <rect>
       <x>300</x>
@@ -169,11 +169,6 @@
     </property>
     <item>
      <property name="text">
-      <string/>
-     </property>
-    </item>
-    <item>
-     <property name="text">
       <string>一等座</string>
      </property>
     </item>
@@ -233,7 +228,7 @@
      </property>
     </item>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_4">
+   <widget class="QLineEdit" name="trainNumberlineEdit">
     <property name="geometry">
      <rect>
       <x>130</x>
@@ -243,7 +238,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_5">
+   <widget class="QLineEdit" name="countlineEdit">
     <property name="geometry">
      <rect>
       <x>130</x>

@@ -10,6 +10,7 @@
 #include "utility.hpp"
 #include "exceptions.hpp"
 #include "binfstream.hpp"
+#include "binfstream.hpp"
 
 namespace sjtu {
 
@@ -67,6 +68,68 @@ private:
 				rson->clear();
 			}
 			del();
+		}
+		
+		void write(binofstream &fout) const {
+			fout << size;
+			if(value != nullptr) {
+				fout << true;
+				fout << value->first;
+				fout << value->second;
+			} else {
+				fout << false;
+			}
+			if(lson != nullptr) {
+				fout << true;
+				lson->write(fout);
+			} else {
+				fout << false;
+			}
+			if(rson != nullptr) {
+				fout << true;
+				rson->write(fout);
+			} else {
+				fout << false;
+			}
+		}
+		void read(binifstream &fin) {
+			bool has;
+			
+			fin >> size;
+			fin >> has;
+			if(has == true) {
+				Key key;
+				T t;
+				fin >> key;
+				fin >> t;
+				value = new value_type(key, t);
+			}
+			fin >> has;
+			if(has == true) {
+				lson = new node(nullptr);
+				lson->read(fin);
+			}
+			fin >> has;
+			if(has == true) {
+				rson = new node(nullptr);
+				rson->read(fin);
+			}
+		}
+		void init(node *&pre) {
+			if(lson != nullptr) {
+				lson->init(pre);
+			}
+			
+			if(pre != nullptr) {
+				pre->suc = this;
+			}
+			this->pre = pre;
+			this->suc = nullptr;
+			pre = this;
+			
+			if(rson != nullptr) {
+				rson->init(pre);
+			}
 		}
 	};
 	node *root, *endNode;
@@ -666,10 +729,19 @@ public:
 	}
 	
 	friend binifstream operator>>(binifstream &fin, map &map) {
+		map.clear();
 		
+		map.root = new node(nullptr);
+		map.root->read(fin);
+		map.endNode = map.getend(map.root);
+		
+		node *null = nullptr;
+		map.root->init(null);
+		return fin;
 	}
 	friend binofstream operator<<(binofstream &fout, const map &map) {
-		
+		map.root->write(fout);
+		return fout;
 	}
 };
 

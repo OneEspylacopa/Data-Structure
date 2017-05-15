@@ -30,6 +30,9 @@ public:
 	string GetSystemHistory() const;
 	string GetTrainData() const;
 	string GetUserData() const;
+	
+	void Import();
+	void Export() const;
 };
 
 #endif

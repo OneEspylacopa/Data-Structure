@@ -20,28 +20,32 @@ private:
 	bool selling;
 	bool canceled;
 	
-public:
 	vector<Station> stations;
 	
 public:
+	TrainNumber();
+	~TrainNumber();
 	TrainNumber(const string &number);
 	
 	string GetNumber() const;
+	vector<Station> GetStations() const;
+	void AddStation(const Station &station);
 	
 	bool BookTicket(const TicketInfo &info);
 	bool ReturnTicket(const TicketInfo &info);
+	vector<TicketsInfo> QueryTicket(const string &start, const string &end) const;
 	
 	bool StartSelling();
 	bool StopSelling();
 	
 	void Cancel();
 	
-	binifstream& operator>>(binifstream &fin) {
-		vector<Station> &vec = stations;
+	friend binifstream& operator>>(binifstream &fin, TrainNumber &trainNumber) {
+		vector<Station> &vec = trainNumber.stations;
 		
-		fin >> number;
-		fin >> selling;
-		fin >> canceled;
+		fin >> trainNumber.number;
+		fin >> trainNumber.selling;
+		fin >> trainNumber.canceled;
 		
 		size_t size;
 		fin >> size;
@@ -55,15 +59,16 @@ public:
 		
 		return fin;
 	}
-	binofstream& operator<<(binofstream &fout) {
-		const vector<Station> &vec = stations;
+	friend binofstream& operator<<(binofstream &fout, const TrainNumber &trainNumber) {
+		const vector<Station> &vec = trainNumber.stations;
 		
-		fout << number;
-		fout << selling;
-		fout << canceled;
+		fout << trainNumber.number;
+		fout << trainNumber.selling;
+		fout << trainNumber.canceled;
 		
 		size_t size = vec.size();
 		fout << size;
+		
 		for(size_t i = 0; i < size; i++) {
 			fout << vec[i];
 		}
@@ -82,7 +87,7 @@ private:
 public:
 	bool BookTicket(const TicketInfo &info);
 	bool ReturnTicket(const TicketInfo &info);
-	vector<TicketInfo> QueryTicket(const string &start, const string &end) const;
+	vector<TicketsInfo> QueryTicket(const string &start, const string &end) const;
 	
 	bool StartSelling(const string &number);
 	bool StopSelling(const string &number);
@@ -90,15 +95,41 @@ public:
 	bool ModifyPlan(const TrainNumber &trainNumber);
 	bool CancelPlan(const string &number);
 	
-	binifstream& operator>>(binifstream &fin);
-	binofstream& operator<<(binofstream &fout);
+	friend binifstream& operator>>(binifstream &fin, TrainDay &trainDay) {
+		vector<TrainNumber> &train = trainDay.train;
+		
+		size_t size;
+		fin >> size;
+		
+		train.clear();
+		train.resize(size);
+		for(size_t i = 0; i < size; i++) {
+			fin >> train[i];
+		}
+		
+		trainDay.numberMap.clear();
+		for(vector<TrainNumber>::iterator it = train.begin(); it != train.end(); it++) {
+			trainDay.numberMap[it->GetNumber()] = it;
+		}
+		return fin;
+	}
+	friend binofstream& operator<<(binofstream &fout, const TrainDay &trainDay) {
+		const vector<TrainNumber> &train = trainDay.train;
+		
+		size_t size = train.size();
+		fout << size;
+		
+		for(size_t i = 0; i < size; i++) {
+			fout << train[i];
+		}
+		return fout;
+	}
 };
 
 class Train {
 private:
 	TrainSystem *sys;
 	
-public:
 	map<Date, TrainDay> trains;
 	
 public:
@@ -107,16 +138,25 @@ public:
 	
 	bool BookTicket(const TicketInfo info);
 	bool ReturnTicket(const TicketInfo &info);
-	vector<TicketInfo> QueryTicket(const string &start, const string &end, const Date &date) const;
+	vector<TicketsInfo> QueryTicket(const Date &date, const string &start, const string &end) const;
 	
 	bool StartSelling(const Date &date, const string &number);
 	bool StopSelling(const Date &date, const string &number);
 	bool AddPlan(const Date &date, const TrainNumber &trainNumber);
 	bool ModifyPlan(const Date &date, const TrainNumber &trainNumber);
 	bool CancelPlan(const Date &date, const string &number);
+	TrainNumber GetTrainNumber(const Date &date, const string &number);
 	
-	binifstream& operator>>(binifstream &fin);
-	binofstream& operator<<(binofstream &fout);
+	void Import(const string &path);
+	
+	friend binifstream& operator>>(binifstream &fin, Train &train) {
+		fin >> train.trains;
+		return fin;
+	}
+	friend binofstream& operator<<(binofstream &fout, const Train &train) {
+		fout << train.trains;
+		return fout;
+	}
 };
 
 #endif

@@ -40,7 +40,7 @@
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:600;&quot;&gt;密码:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="userIDlineEdit">
     <property name="geometry">
      <rect>
       <x>110</x>
@@ -49,11 +49,14 @@
       <height>21</height>
      </rect>
     </property>
+    <property name="maxLength">
+     <number>9</number>
+    </property>
     <property name="placeholderText">
      <string>请输入用户ID</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
+   <widget class="QLineEdit" name="userPasswordlineEdit">
     <property name="geometry">
      <rect>
       <x>110</x>
@@ -61,6 +64,12 @@
       <width>241</width>
       <height>21</height>
      </rect>
+    </property>
+    <property name="maxLength">
+     <number>16</number>
+    </property>
+    <property name="frame">
+     <bool>false</bool>
     </property>
     <property name="echoMode">
      <enum>QLineEdit::Password</enum>

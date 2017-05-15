@@ -3,6 +3,12 @@
 
 #include <QMainWindow>
 #include "QtRegister.h"
+#include <string>
+#include "TrainSystem.h"
+#include "map.hpp"
+#include "vector"
+#include "SHA512.hpp"
+
 namespace Ui {
 class QtLogin;
 }

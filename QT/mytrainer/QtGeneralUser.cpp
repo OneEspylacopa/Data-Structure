@@ -3,6 +3,10 @@
 #include "QtBookTicket.h"
 #include "QtMyOrder.h"
 #include "QtModifyInformation.h"
+#include <string>
+#include "TrainSystem.h"
+#include "map.hpp"
+#include "vector.hpp"
 
 
 QtGeneralUser::QtGeneralUser(QWidget *parent) :
